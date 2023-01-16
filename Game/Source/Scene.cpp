@@ -109,6 +109,17 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
 		yaw = -0.02;
 	}
+	if (app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+		p1 << 100, 100, 100;
+		p2 << 200, 100, 100;
+		p3 << 200, 200, 100;
+		p4 << 100, 200, 100;
+		p5 << 100, 100, 200;
+		p6 << 200, 100, 200;
+		p7 << 200, 200, 200;
+		p8 << 100, 200, 200;
+		LOG("Rotation reset");
+	}
 
 	p1 -= center;
 	p1 = Rotate(p1, roll, pitch, yaw);
