@@ -57,7 +57,15 @@ bool Scene::Start()
 	button1 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "BUENAS", { (int)w / 2,(int)h / 2 - 30,100,20 }, this);
 	button2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "R", { (int)w / 2 - 50,(int)h / 2,200,20 }, this);
 
+	p1 << 100, 100, 100;
+	p2 << 200, 100, 100;
+	p3 << 200, 200, 100;
+	p4 << 100, 200, 100;
 
+	p5 << 100, 100, 200;
+	p6 << 200, 100, 200;
+	p7 << 200, 200, 200;
+	p8 << 100, 200, 200;
 
 	return true;
 }
@@ -71,7 +79,40 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	app->render->DrawLine(50, 50, 50, 300, 250, 250, 250, 250);
+
+	app->render->DrawLine(600, 600, 800, 600, 250, 250, 250, 250);
+
+	p1 = Rotate(p1, 0.002, 0.001, 0.004);
+	p2 = Rotate(p2, 0.002, 0.001, 0.004);
+	p3 = Rotate(p3, 0.002, 0.001, 0.004);
+	p4 = Rotate(p4, 0.002, 0.001, 0.004);
+	p5 = Rotate(p5, 0.002, 0.001, 0.004);
+	p6 = Rotate(p6, 0.002, 0.001, 0.004);
+	p7 = Rotate(p7, 0.002, 0.001, 0.004);
+	p8 = Rotate(p8, 0.002, 0.001, 0.004);
+
+	//SDL_RenderDrawPoint(app->render->renderer, p1(0), p1(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p2(0), p2(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p3(0), p3(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p4(0), p4(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p5(0), p5(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p6(0), p6(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p7(0), p7(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p8(0), p8(1));
+
+	app->render->DrawLine(p1(0), p1(1), p2(0), p2(1), 250, 250, 250, 250);
+	app->render->DrawLine(p1(0), p1(1), p4(0), p4(1), 250, 250, 250, 250);
+	app->render->DrawLine(p1(0), p1(1), p5(0), p5(1), 250, 250, 250, 250);
+	app->render->DrawLine(p2(0), p2(1), p3(0), p3(1), 250, 250, 250, 250);
+	app->render->DrawLine(p2(0), p2(1), p6(0), p6(1), 250, 250, 250, 250);
+	app->render->DrawLine(p3(0), p3(1), p7(0), p7(1), 250, 250, 250, 250);
+	app->render->DrawLine(p3(0), p3(1), p4(0), p4(1), 250, 250, 250, 250);
+	app->render->DrawLine(p4(0), p4(1), p8(0), p8(1), 250, 250, 250, 250);
+	app->render->DrawLine(p5(0), p5(1), p6(0), p6(1), 250, 250, 250, 250);
+	app->render->DrawLine(p5(0), p5(1), p8(0), p8(1), 250, 250, 250, 250);
+	app->render->DrawLine(p6(0), p6(1), p7(0), p7(1), 250, 250, 250, 250);
+	app->render->DrawLine(p7(0), p7(1), p8(0), p8(1), 250, 250, 250, 250);
+
 	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
 	//if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 	//	app->SaveGameRequest();
@@ -179,6 +220,26 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	}
 
 	return true;
+
+}
+
+Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z) {
+	float rad = 0;
+
+	rad = x;
+	point(1) = cos(rad) * point(1) - sin(rad) * point(2);
+	point(2) = sin(rad) * point(1) + cos(rad) * point(2);
+
+	rad = y;
+	point(0) = cos(rad) * point(0) + sin(rad) * point(2);
+	point(2) = -sin(rad) * point(0) + cos(rad) * point(2);
+
+	rad = z;
+	point(0) = cos(rad) * point(0) - sin(rad) * point(1);
+	point(1) = sin(rad) * point(0) + cos(rad) * point(1);
+
+	return point;
+
 }
 
 // Called before quitting
