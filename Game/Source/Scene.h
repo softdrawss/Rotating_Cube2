@@ -5,7 +5,7 @@
 #include "GuiButton.h"
 #include <vector>
 #include "SDL/include/SDL.h"
-
+#include "Animation.h"
 
 struct SDL_Texture;
 
@@ -58,6 +58,11 @@ private:
 	GuiButton* button2;
 
 	fPoint p1, p2, p3, p4, p5, p6, p7, p8;
+
+	SDL_Texture* cubeTexture;
+	Animation down, left, right, back, front, up;
+	Animation* currentAnim = nullptr;
+
 };
 
 #endif // __SCENE_H__

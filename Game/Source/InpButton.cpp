@@ -3,6 +3,7 @@
 #include "App.h"
 #include "Audio.h"
 #include "Log.h"
+#include "SString.h"
 
 InpButton::InpButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::INPUTBOX, id)
 {
@@ -83,3 +84,23 @@ bool InpButton::Draw(Render* render)
 
 	return false;
 }
+
+/*
+* Constructor with text, font, font color, and renderer.
+*
+* @param t: The text in the text box.
+* @param font: The font we are using.
+* @param color: The color of the text.
+* @param renderer: The renderer.
+* @param maxLength: The maximum width of the text box before it wraps around.
+*/
+
+//TextBox(string t, TTF_Font* font, SDL_Color color, SDL_Renderer* renderer, int maxLength)
+//{
+//	char CharArray[2000]; // Create a char array
+//	strcpy_s(CharArray, t.c_str()); // Convert the string into a char array for the surface function.
+//
+//	Surface = TTF_RenderText_Blended_Wrapped(font, CharArray, color, maxLength); // Make into a surface.
+//	Texture = SDL_CreateTextureFromSurface(renderer, Surface); // Turn the surface into a texture.
+//	TTF_SizeText(font, CharArray, &w, &h); // Size the texture so it renders the text correctly.
+//}
