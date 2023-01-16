@@ -41,16 +41,18 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char
 	case GuiControlType::COMBOBOX:
 		break;
 	case GuiControlType::DROPDOWNBOX:
-		break;
+		break;*/
+
 	case GuiControlType::INPUTBOX:
 		break;
+	/*
 	case GuiControlType::VALUEBOX:
 		break;
 	case GuiControlType::SPINNER:
 		break;
 	default:
 		break;
-		*/
+	*/
 	}
 
 	//Set the observer

@@ -57,7 +57,7 @@ private:
 	GuiButton* button1; 
 	GuiButton* button2;
 
-	fPoint f1, f2, f3, f4, d1, d2, d3, d4;
+	fPoint p1, p2, p3, p4, p5, p6, p7, p8;
 };
 
 #endif // __SCENE_H__

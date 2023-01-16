@@ -1,10 +1,10 @@
-#include "GuiButton.h"
+#include "InpButton.h"
 #include "Render.h"
 #include "App.h"
 #include "Audio.h"
 #include "Log.h"
 
-GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
+InpButton::InpButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::INPUTBOX, id)
 {
 	this->bounds = bounds;
 	this->text = text;
@@ -15,12 +15,12 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
 	audioFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
 }
 
-GuiButton::~GuiButton()
+InpButton::~InpButton()
 {
 
 }
 
-bool GuiButton::Update(float dt)
+bool InpButton::Update(float dt)
 {
 	if (state != GuiControlState::DISABLED)
 	{
@@ -32,10 +32,10 @@ bool GuiButton::Update(float dt)
 		// I'm inside the limitis of the button
 		if (mouseX >= bounds.x && mouseX <= bounds.x + bounds.w &&
 			mouseY >= bounds.y && mouseY <= bounds.y + bounds.h) {
-			
+
 			state = GuiControlState::FOCUSED;
 			if (previousState != state) {
-				LOG("Change state from %d to %d",previousState,state);
+				LOG("Change state from %d to %d", previousState, state);
 				//app->audio->PlayFx(audioFxId);
 			}
 
@@ -59,7 +59,7 @@ bool GuiButton::Update(float dt)
 
 
 
-bool GuiButton::Draw(Render* render)
+bool InpButton::Draw(Render* render)
 {
 	//L15: DONE 4: Draw the button according the GuiControl State
 
@@ -79,7 +79,7 @@ bool GuiButton::Draw(Render* render)
 		break;
 	}
 
-	app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h, {255,255,255});
+	app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h, { 255,255,255 });
 
 	return false;
 }

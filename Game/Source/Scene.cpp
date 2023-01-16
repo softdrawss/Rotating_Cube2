@@ -53,7 +53,9 @@ bool Scene::Start()
 	uint w, h;
 	app->win->GetWindowSize(w, h);
 	button1 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "BUENAS", { (int)w / 2,(int)h / 2 - 30,100,20 }, this);
-	button2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "FAIG PROVES", { (int)w / 2 - 50,(int)h / 2,200,20 }, this);
+	button2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "R", { (int)w / 2 - 50,(int)h / 2,200,20 }, this);
+
+
 
 	return true;
 }
@@ -67,7 +69,7 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	//app->render->DrawLine();
+	app->render->DrawLine(50, 50, 50, 300, 250, 250, 250, 250);
 	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
 	//if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 	//	app->SaveGameRequest();
