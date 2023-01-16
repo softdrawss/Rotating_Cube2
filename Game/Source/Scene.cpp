@@ -79,17 +79,68 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+	roll = 0;
+	pitch = 0;
+	yaw = 0;
 
-	app->render->DrawLine(600, 600, 800, 600, 250, 250, 250, 250);
+	center << p1(0) + p2(0) + p3(0) + p4(0) + p5(0) + p6(0) + p7(0) + p8(0),
+		p1(1) + p2(1) + p3(1) + p4(1) + p5(1) + p6(1) + p7(1) + p8(1),
+		p1(2) + p2(2) + p3(2) + p4(2) + p5(2) + p6(2) + p7(2) + p8(2);
 
-	p1 = Rotate(p1, 0.002, 0.001, 0.004);
-	p2 = Rotate(p2, 0.002, 0.001, 0.004);
-	p3 = Rotate(p3, 0.002, 0.001, 0.004);
-	p4 = Rotate(p4, 0.002, 0.001, 0.004);
-	p5 = Rotate(p5, 0.002, 0.001, 0.004);
-	p6 = Rotate(p6, 0.002, 0.001, 0.004);
-	p7 = Rotate(p7, 0.002, 0.001, 0.004);
-	p8 = Rotate(p8, 0.002, 0.001, 0.004);
+	center(0) = center(0) / 8;
+	center(1) = center(1) / 8;
+	center(2) = center(2) / 8;
+
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+		roll = 0.02;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+		roll = -0.02;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		pitch = 0.02;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		pitch = -0.02;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+		yaw = 0.02;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
+		yaw = -0.02;
+	}
+
+	p1 -= center;
+	p1 = Rotate(p1, roll, pitch, yaw);
+	p1 += center;
+
+	p2 -= center;
+	p2 = Rotate(p2, roll, pitch, yaw);
+	p2 += center;
+
+	p3 -= center;
+	p3 = Rotate(p3, roll, pitch, yaw);
+	p3 += center;
+
+	p4 -= center;
+	p4 = Rotate(p4, roll, pitch, yaw);
+	p4 += center;
+
+	p5 -= center;
+	p5 = Rotate(p5, roll, pitch, yaw);
+	p5 += center;
+
+	p6 -= center;
+	p6 = Rotate(p6, roll, pitch, yaw);
+	p6 += center;
+
+	p7 -= center;
+	p7 = Rotate(p7, roll, pitch, yaw);
+	p7 += center;
+
+	p8 -= center;
+	p8 = Rotate(p8, roll, pitch, yaw);
+	p8 += center;
 
 	//SDL_RenderDrawPoint(app->render->renderer, p1(0), p1(1));
 	//SDL_RenderDrawPoint(app->render->renderer, p2(0), p2(1));

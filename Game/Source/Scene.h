@@ -49,6 +49,10 @@ public:
 	//L02: DONE 3: Declare a Player attribute 
 	//Player* player;
 
+	float roll;   //X Rotation
+	float pitch;  //Y Rotation
+	float yaw;    //Z Rotation
+
 private:
 	SDL_Texture* img;
 	SDL_Texture* mouseTileTex = nullptr;
@@ -63,6 +67,7 @@ private:
 	GuiButton* button2;
 
 	Eigen::Vector3f p1, p2, p3, p4, p5, p6, p7, p8;
+	Eigen::Vector3f center;
 };
 
 #endif // __SCENE_H__
