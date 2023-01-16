@@ -9,8 +9,8 @@
 #include "Map.h"
 #include "PathFinding.h"
 #include "GuiManager.h"
-#include <Eigen/Core>
-#include <Eigen/Dense>
+#include <eigen/Eigen/Core>
+#include <eigen/Eigen/Dense>
 #include <math.h>
 #include "Defs.h"
 #include "Log.h"
