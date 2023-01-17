@@ -54,10 +54,10 @@ bool Scene::Start()
 	p[2] = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "PUSH", { 1130,295,100,40 }, this);
 	p[3] = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "PUSH", { 1130,417,100,40 }, this);
 
-	p[0]->button = GuiButtontype::PUSH;
-	p[1]->button = GuiButtontype::PUSH;
-	p[2]->button = GuiButtontype::PUSH;
-	p[3]->button = GuiButtontype::PUSH;
+	p[0]->button = GuiButtontype::PUSH_Q;
+	p[1]->button = GuiButtontype::PUSH_E;
+	p[2]->button = GuiButtontype::PUSH_A;
+	p[3]->button = GuiButtontype::PUSH_V;
 
 	// Quaternion Input
 	q[0] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 707 ,100,90,30 }, this);

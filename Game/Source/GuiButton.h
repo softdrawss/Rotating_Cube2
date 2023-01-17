@@ -7,7 +7,10 @@
 #include "SString.h"
 
 enum class GuiButtontype {
-	PUSH,
+	PUSH_Q,
+	PUSH_E,
+	PUSH_A,
+	PUSH_V,
 	RESET
 };
 

@@ -71,6 +71,14 @@ public:
 	float pitch;  //Y Rotation
 	float yaw;    //Z Rotation
 
+	GuiButton* p[4]; 
+	GuiButton* button2;
+	//GuiButton* push[4]; //Not sure if I should create another button or just a bool
+	InpButton* q[4];
+	InpButton* e[4];
+	InpButton* a[3];
+	InpButton* v[3];
+
 private:
 	SDL_Texture* img;
 	SDL_Texture* mouseTileTex = nullptr;
@@ -81,14 +89,7 @@ private:
 	bool originSelected = false;
 
 	// L15: DONE 2: Declare a GUI Button and create it using the GuiManager
-	GuiButton* p[4]; 
-	GuiButton* button2;
-	//GuiButton* push[4]; //Not sure if I should create another button or just a bool
-	InpButton* q[4];
-	InpButton* e[4];
-	InpButton* a[3];
-	InpButton* v[3];
-
+	
 	SDL_Texture* cubeTexture;
 	SDL_Texture* UI;
 	Animation down, left, right, back, front, up;

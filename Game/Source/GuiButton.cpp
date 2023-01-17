@@ -42,8 +42,34 @@ bool GuiButton::Update(float dt)
 
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT) {
 				state = GuiControlState::PRESSED;
-				if (button == GuiButtontype::PUSH) {
+				if (button == GuiButtontype::PUSH_Q) {
+					//Quaternion values in std::string to float
+					std::stof(app->scene->q[0]->input);
+					std::stof(app->scene->q[1]->input);
+					std::stof(app->scene->q[2]->input);
+					std::stof(app->scene->q[3]->input);
 
+				}
+				if (button == GuiButtontype::PUSH_E) {
+					//Euler axis and angle values in std::string to float
+					std::stof(app->scene->e[0]->input);
+					std::stof(app->scene->e[1]->input);
+					std::stof(app->scene->e[2]->input);
+					std::stof(app->scene->e[3]->input);
+				}
+				if (button == GuiButtontype::PUSH_A) {
+					//Euler angles values in std::string to float
+					std::stof(app->scene->a[0]->input);
+					std::stof(app->scene->a[1]->input);
+					std::stof(app->scene->a[2]->input);
+					std::stof(app->scene->a[3]->input);
+				}
+				if (button == GuiButtontype::PUSH_V) {
+					//Rotation vector in std::string to float
+					std::stof(app->scene->v[0]->input);
+					std::stof(app->scene->v[1]->input);
+					std::stof(app->scene->v[2]->input);
+					std::stof(app->scene->v[3]->input);
 				}
 				if (button == GuiButtontype::RESET) {
 					app->scene->Reset();
