@@ -44,11 +44,39 @@ bool Scene::Start()
 	UI = app->tex->Load("Assets/UI.png");
 
 	// Buttons
-	uint w, h;
-	app->win->GetWindowSize(w, h);
-	//button1 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "BUENAS", { (int)w / 2,(int)h / 2 - 30,100,20 }, this);
-	button2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "RESET", { 450 ,624,120,40 }, this);
+	// Reset
+	button2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "RESET", { 450,624,120,40 }, this);
 	button2->button = GuiButtontype::RESET;
+
+	// Push
+	p[0] = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "PUSH", { 1130,51,100,40 }, this);
+	p[1] = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "PUSH", { 1130,173,100,40 }, this);
+	p[2] = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "PUSH", { 1130,295,100,40 }, this);
+	p[3] = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "PUSH", { 1130,417,100,40 }, this);
+
+	p[0]->button = GuiButtontype::PUSH;
+	p[1]->button = GuiButtontype::PUSH;
+	p[2]->button = GuiButtontype::PUSH;
+	p[3]->button = GuiButtontype::PUSH;
+
+	// Quaternion Input
+	q[0] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 707 ,100,90,30 }, this);
+	q[1] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 815 ,100,90,30 }, this);
+	q[2] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 923 ,100,90,30 }, this);
+	q[3] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 1031 ,100,90,30 }, this);
+
+	e[0] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 743 ,223,90,30 }, this);
+	e[1] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 851,223,90,30 }, this);
+	e[2] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 959,223,90,30 }, this);
+	e[3] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 980 ,180,90,30 }, this);
+
+	a[0] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 670 ,350,90,30 }, this);
+	a[1] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 812 ,350,90,30 }, this);
+	a[2] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 956 ,350,90,30 }, this);
+
+	v[0] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 707 ,468,90,30 }, this);
+	v[1] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 815 ,468,90,30 }, this);
+	v[2] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 923 ,468,90,30 }, this);
 
 	//Animation Camera views
 	down.PushBack({ 0, 0, 100, 90 });
@@ -73,8 +101,8 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-
-#pragma region CUBE
+	//Camera rotation
+#pragma region CAMERA_ROTATION
 	roll = 0;
 	pitch = 0;
 	yaw = 0;
@@ -160,66 +188,10 @@ bool Scene::Update(float dt)
 	app->render->DrawLine(p5(0), p5(1), p8(0), p8(1), 250, 250, 250, 250);
 	app->render->DrawLine(p6(0), p6(1), p7(0), p7(1), 250, 250, 250, 250);
 	app->render->DrawLine(p7(0), p7(1), p8(0), p8(1), 250, 250, 250, 250);
-#pragma	endregion
+#pragma	endregion CAMERA_ROTATION
 	
-	////Controls camera View
-	//if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
-	//	currentAnim = &up;
-	//
-	//if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	//	currentAnim = &down;
-	//
-	//if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	//	currentAnim = &left;
-	//
-	//if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	//	currentAnim = &right;
-
-	//if (app->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
-	//	currentAnim = &front;
-
-	//if (app->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)
-	//	currentAnim = &back;
-
-
-	// L08: DONE 3: Test World to map method
-
-	/*
-	int mouseX, mouseY;
-	app->input->GetMousePosition(mouseX, mouseY);
-
-	iPoint mouseTile = iPoint(0, 0); 
-
-	if (app->map->mapData.type == MapTypes::MAPTYPE_ISOMETRIC) {
-		mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x - app->map->mapData.tileWidth / 2,
-												mouseY - app->render->camera.y - app->map->mapData.tileHeight / 2);
-	}
-	if (app->map->mapData.type == MapTypes::MAPTYPE_ORTHOGONAL) {
-		mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x,
-												mouseY - app->render->camera.y);
-	}
-
-	//Convert again the tile coordinates to world coordinates to render the texture of the tile
-	iPoint highlightedTileWorld = app->map->MapToWorld(mouseTile.x, mouseTile.y);
-	app->render->DrawTexture(mouseTileTex, highlightedTileWorld.x, highlightedTileWorld.y);
-
-	//Test compute path function
-	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	{
-		if (originSelected == true)
-		{
-			app->pathfinding->CreatePath(origin, mouseTile);
-			originSelected = false;
-		}
-		else
-		{
-			origin = mouseTile;
-			originSelected = true;
-			app->pathfinding->ClearLastPath();
-		}
-	}
-	*/
-
+#pragma region UI
+	//Draw UI
 	app->render->DrawTexture(UI, 0, 0);
 	//SDL_Rect rect2 = currentAnim->GetCurrentFrame();
 	//app->render->DrawTexture(cubeTexture, 50, 50, &rect2);
@@ -229,21 +201,43 @@ bool Scene::Update(float dt)
 	//Draw coordenades of each point
 	std::string string;
 	string = "p1 = " + std::to_string(p1(0)) + ", " + std::to_string(p1(1)) + ", " + std::to_string(p1(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 200, 390, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 200, 390, 20, { 204, 204, 204 });
 	string = "p2 = " + std::to_string(p2(0)) + ", " + std::to_string(p2(1)) + ", " + std::to_string(p2(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 220, 390, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 220, 390, 20, { 204, 204, 204 });
 	string = "p3 = " + std::to_string(p3(0)) + ", " + std::to_string(p3(1)) + ", " + std::to_string(p3(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 240, 390, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 240, 390, 20, { 204, 204, 204 });
 	string = "p4 = " + std::to_string(p4(0)) + ", " + std::to_string(p4(1)) + ", " + std::to_string(p4(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 260, 390, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 260, 390, 20, { 204, 204, 204 });
 	string = "p5 = " + std::to_string(p5(0)) + ", " + std::to_string(p5(1)) + ", " + std::to_string(p5(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 280, 390, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 280, 390, 20, { 204, 204, 204 });
 	string = "p6 = " + std::to_string(p6(0)) + ", " + std::to_string(p6(1)) + ", " + std::to_string(p6(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 300, 390, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 300, 390, 20, { 204, 204, 204 });
 	string = "p7 = " + std::to_string(p7(0)) + ", " + std::to_string(p7(1)) + ", " + std::to_string(p7(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 320, 390, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 320, 390, 20, { 204, 204, 204 });
 	string = "p8 = " + std::to_string(p8(0)) + ", " + std::to_string(p8(1)) + ", " + std::to_string(p8(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 340, 390, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 340, 390, 20, { 204, 204, 204 });
+
+	//Draw matrix
+	string = std::to_string(p1(2));
+	app->render->DrawText(string.c_str(), 730, 570, 120, 25, { 204, 204, 204 });
+	string = std::to_string(p2(2));
+	app->render->DrawText(string.c_str(), 730, 600, 120, 25, { 204, 204, 204 });
+	string = std::to_string(p3(2));
+	app->render->DrawText(string.c_str(), 730, 630, 120, 25, { 204, 204, 204 });
+	string = std::to_string(p4(2));
+	app->render->DrawText(string.c_str(), 870, 570, 120, 25, { 204, 204, 204 });
+	string = std::to_string(p5(2));
+	app->render->DrawText(string.c_str(), 870, 600, 120, 25, { 204, 204, 204 });
+	string = std::to_string(p6(2));
+	app->render->DrawText(string.c_str(), 870, 630, 120, 25, { 204, 204, 204 });
+	string = std::to_string(p7(2));
+	app->render->DrawText(string.c_str(), 1010, 570, 120, 25, { 204, 204, 204 });
+	string = std::to_string(p8(2));
+	app->render->DrawText(string.c_str(), 1010, 600, 120, 25, { 204, 204, 204 });
+	string = std::to_string(p1(2));
+	app->render->DrawText(string.c_str(), 1010, 630, 120, 25, { 204, 204, 204 });
+
+#pragma endregion UI
 
 	return true;
 }

@@ -73,20 +73,20 @@ bool GuiButton::Draw(Render* render)
 	switch (state)
 	{
 	case GuiControlState::DISABLED:
-		render->DrawRectangle(bounds, 200, 200, 200, 255, true, false);
+		render->DrawRectangle(bounds, 200, 200, 200, 200, true, false);
 		break;
 	case GuiControlState::NORMAL:
 		render->DrawRectangle(bounds, 0, 0, 255, 200, true, false);
 		break;
 	case GuiControlState::FOCUSED:
-		render->DrawRectangle(bounds, 153, 153, 255, 255, true, false);
+		render->DrawRectangle(bounds, 153, 153, 255, 200, true, false);
 		break;
 	case GuiControlState::PRESSED:
 		render->DrawRectangle(bounds, 0, 255, 0, 200, true, false);
 		break;
 	}
 
-	app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h, {255,255,255});
+	app->render->DrawText(text.GetString(), bounds.x+10, bounds.y+5, bounds.w-20, bounds.h-10, {255,255,255});
 
 	return false;
 }

@@ -43,10 +43,10 @@ public:
 
 	// Define multiple Gui Event methods
 	bool OnGuiMouseClickEvent(GuiControl* control);
-
-	Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z);
+	
 	void Reset();
-
+	
+	Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z);
 
 	Eigen::Matrix3d FixMatrix0s(Eigen::Matrix3d mat);
 
@@ -81,13 +81,13 @@ private:
 	bool originSelected = false;
 
 	// L15: DONE 2: Declare a GUI Button and create it using the GuiManager
-	GuiButton* button1; 
+	GuiButton* p[4]; 
 	GuiButton* button2;
 	//GuiButton* push[4]; //Not sure if I should create another button or just a bool
 	InpButton* q[4];
-	InpButton* euler[4];
-	InpButton* angles[3];
-	InpButton* vector[3];
+	InpButton* e[4];
+	InpButton* a[3];
+	InpButton* v[3];
 
 	SDL_Texture* cubeTexture;
 	SDL_Texture* UI;
@@ -96,7 +96,7 @@ private:
 
 	Eigen::Vector3f p1, p2, p3, p4, p5, p6, p7, p8;
 	Eigen::Vector3f center;
-
+	Eigen::Matrix3f matrix;
 };
 
 #endif // __SCENE_H__
