@@ -13,7 +13,7 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
 	canClick = true;
 	drawBasic = false;
 
-	audioFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
+	//audioFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
 }
 
 GuiButton::~GuiButton()
@@ -76,13 +76,13 @@ bool GuiButton::Draw(Render* render)
 		render->DrawRectangle(bounds, 200, 200, 200, 255, true, false);
 		break;
 	case GuiControlState::NORMAL:
-		render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
+		render->DrawRectangle(bounds, 0, 0, 255, 200, true, false);
 		break;
 	case GuiControlState::FOCUSED:
 		render->DrawRectangle(bounds, 153, 153, 255, 255, true, false);
 		break;
 	case GuiControlState::PRESSED:
-		render->DrawRectangle(bounds, 0, 255, 0, 225, true, false);
+		render->DrawRectangle(bounds, 0, 255, 0, 200, true, false);
 		break;
 	}
 
