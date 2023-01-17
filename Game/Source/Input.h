@@ -2,7 +2,10 @@
 #define __INPUT_H__
 
 #include "Module.h"
+#include "Window.h"
 
+#include "Defs.h"
+#include "Log.h"
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
 //#define LAST_KEYS_PRESSED_BUFFER 50
@@ -73,6 +76,7 @@ private:
 	int mouseMotionY;
 	int mouseX;
 	int mouseY;
+
 };
 
 #endif // __INPUT_H__

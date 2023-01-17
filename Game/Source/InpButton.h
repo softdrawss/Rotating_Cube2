@@ -5,6 +5,8 @@
 
 #include "Point.h"
 #include "SString.h"
+#include "Render.h"
+#include <string>
 
 class InpButton : public GuiControl
 {
@@ -21,8 +23,14 @@ public:
 
 	bool canClick = true;
 	bool drawBasic = false;
+	bool renderText = false;
 
+	std::string input;
 	uint audioFxId;
+
+	//Scene textures
+	SDL_Texture* gPromptTextTexture;
+	SDL_Texture* gInputTextTexture;
 };
 
 #endif // __GUIBUTTON_H__

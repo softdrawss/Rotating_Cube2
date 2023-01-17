@@ -13,16 +13,21 @@ InpButton::InpButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
 	canClick = true;
 	drawBasic = false;
 
-	audioFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
+	//audioFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
+	state = GuiControlState::NORMAL;
+	input = "0.00000";
+	renderText = false;
 }
 
 InpButton::~InpButton()
 {
-
 }
 
 bool InpButton::Update(float dt)
 {
+	renderText = false;
+	SDL_Event e;
+
 	if (state != GuiControlState::DISABLED)
 	{
 		// L15: DONE 3: Update the state of the GUiButton according to the mouse position
@@ -34,23 +39,76 @@ bool InpButton::Update(float dt)
 		if (mouseX >= bounds.x && mouseX <= bounds.x + bounds.w &&
 			mouseY >= bounds.y && mouseY <= bounds.y + bounds.h) {
 
-			state = GuiControlState::FOCUSED;
 			if (previousState != state) {
 				LOG("Change state from %d to %d", previousState, state);
 				//app->audio->PlayFx(audioFxId);
 			}
 
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT) {
-				state = GuiControlState::PRESSED;
-			}
-
 			//
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP) {
-				NotifyObserver();
+				state = GuiControlState::PRESSED;
+				SDL_StartTextInput();
+
+			}
+
+		}
+		if (state == GuiControlState::PRESSED) {
+			if ((app->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_UP) && input.length() > 0) {
+				input.pop_back();
+				renderText = true;
+			}
+			if ((app->input->GetKey(SDL_SCANCODE_1) == KEY_UP)) {
+				std::string n = "1";
+				input += n;
+				renderText = true;
+
+			} if ((app->input->GetKey(SDL_SCANCODE_2) == KEY_UP)) {
+				std::string n = "2";
+				input += n;
+				renderText = true;
+			} if ((app->input->GetKey(SDL_SCANCODE_3) == KEY_UP)) {
+				std::string n = "3";
+				input += n;
+				renderText = true;
+			} if ((app->input->GetKey(SDL_SCANCODE_4) == KEY_UP)) {
+				std::string n = "4";
+				input += n;
+				renderText = true;
+			} if ((app->input->GetKey(SDL_SCANCODE_5) == KEY_UP)) {
+				std::string n = "5";
+				input += n;
+				renderText = true;
+			} if ((app->input->GetKey(SDL_SCANCODE_6) == KEY_UP)) {
+				std::string n = "6";
+				input += n;
+				renderText = true;
+			} if ((app->input->GetKey(SDL_SCANCODE_7) == KEY_UP)) {
+				std::string n = "7";
+				input += n;
+				renderText = true;
+			} if ((app->input->GetKey(SDL_SCANCODE_8) == KEY_UP)) {
+				std::string n = "8";
+				input += n;
+				renderText = true;
+			} if ((app->input->GetKey(SDL_SCANCODE_9) == KEY_UP)) {
+				std::string n = "9";
+				input += n;
+				renderText = true;
+			} if ((app->input->GetKey(SDL_SCANCODE_0) == KEY_UP)) {
+				std::string n = "0";
+				input += n;
+				renderText = true;
+			}if ((app->input->GetKey(SDL_SCANCODE_PERIOD) == KEY_UP)) {
+				std::string n = ".";
+				input += n;
+				renderText = true;
+			}	if ((app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_UP)) {
+				state = GuiControlState::NORMAL;
+
 			}
 		}
 		else {
-			state = GuiControlState::NORMAL;
+			
 		}
 	}
 
@@ -67,40 +125,23 @@ bool InpButton::Draw(Render* render)
 	switch (state)
 	{
 	case GuiControlState::DISABLED:
-		render->DrawRectangle(bounds, 200, 200, 200, 255, true, false);
+		render->DrawRectangle(bounds, 204, 204, 204, 200, true, false);
 		break;
 	case GuiControlState::NORMAL:
-		render->DrawRectangle(bounds, 204, 204, 204, 255, true, false);
+		render->DrawRectangle(bounds, 204, 204, 204, 200, true, false);
 		break;
 	case GuiControlState::FOCUSED:
-		render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
+		render->DrawRectangle(bounds, 204, 204, 204, 200, true, false);
 		break;
 	case GuiControlState::PRESSED:
-		render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
+		render->DrawRectangle(bounds, 0, 204, 204, 200, true, false);
 		break;
 	}
 
-	app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h, { 255,255,255 });
+	if (renderText = true) {
+		app->render->DrawText(input.c_str(), bounds.x, bounds.y, bounds.w, bounds.h, { 255,255,255 });
+	}
+	
 
 	return false;
 }
-
-/*
-* Constructor with text, font, font color, and renderer.
-*
-* @param t: The text in the text box.
-* @param font: The font we are using.
-* @param color: The color of the text.
-* @param renderer: The renderer.
-* @param maxLength: The maximum width of the text box before it wraps around.
-*/
-
-//TextBox(string t, TTF_Font* font, SDL_Color color, SDL_Renderer* renderer, int maxLength)
-//{
-//	char CharArray[2000]; // Create a char array
-//	strcpy_s(CharArray, t.c_str()); // Convert the string into a char array for the surface function.
-//
-//	Surface = TTF_RenderText_Blended_Wrapped(font, CharArray, color, maxLength); // Make into a surface.
-//	Texture = SDL_CreateTextureFromSurface(renderer, Surface); // Turn the surface into a texture.
-//	TTF_SizeText(font, CharArray, &w, &h); // Size the texture so it renders the text correctly.
-//}
