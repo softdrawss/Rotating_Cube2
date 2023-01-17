@@ -91,11 +91,12 @@ bool Scene::Update(float dt)
 	center(1) = center(1) / 8;
 	center(2) = center(2) / 8;
 
+
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		roll = 0.02;
+		roll = -0.02;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		roll = -0.02;
+		roll = 0.02;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		pitch = 0.02;
@@ -109,6 +110,7 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
 		yaw = -0.02;
 	}
+
 	if (app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
 		p1 << 100, 100, 100;
 		p2 << 200, 100, 100;
@@ -163,13 +165,13 @@ bool Scene::Update(float dt)
 	//SDL_RenderDrawPoint(app->render->renderer, p8(0), p8(1));
 
 	app->render->DrawLine(p1(0), p1(1), p2(0), p2(1), 250, 250, 250, 250);
-	app->render->DrawLine(p1(0), p1(1), p4(0), p4(1), 250, 250, 250, 250);
+	app->render->DrawLine(p1(0), p1(1), p4(0), p4(1), 0, 250, 0, 250);
 	app->render->DrawLine(p1(0), p1(1), p5(0), p5(1), 250, 250, 250, 250);
 	app->render->DrawLine(p2(0), p2(1), p3(0), p3(1), 250, 250, 250, 250);
 	app->render->DrawLine(p2(0), p2(1), p6(0), p6(1), 250, 250, 250, 250);
 	app->render->DrawLine(p3(0), p3(1), p7(0), p7(1), 250, 250, 250, 250);
-	app->render->DrawLine(p3(0), p3(1), p4(0), p4(1), 250, 250, 250, 250);
-	app->render->DrawLine(p4(0), p4(1), p8(0), p8(1), 250, 250, 250, 250);
+	app->render->DrawLine(p3(0), p3(1), p4(0), p4(1), 0, 0, 250, 250);
+	app->render->DrawLine(p4(0), p4(1), p8(0), p8(1), 250, 0, 0, 250);
 	app->render->DrawLine(p5(0), p5(1), p6(0), p6(1), 250, 250, 250, 250);
 	app->render->DrawLine(p5(0), p5(1), p8(0), p8(1), 250, 250, 250, 250);
 	app->render->DrawLine(p6(0), p6(1), p7(0), p7(1), 250, 250, 250, 250);
