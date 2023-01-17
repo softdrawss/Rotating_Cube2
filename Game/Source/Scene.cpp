@@ -5,15 +5,13 @@
 #include "Render.h"
 #include "Window.h"
 #include "Scene.h"
-//#include "EntityManager.h"
-#include "Map.h"
-#include "PathFinding.h"
 #include "GuiManager.h"
 #include <eigen/Eigen/Core>
 #include <eigen/Eigen/Dense>
 #include <math.h>
 #include "Defs.h"
 #include "Log.h"
+#include <string>
 
 Scene::Scene() : Module()
 {
@@ -46,10 +44,9 @@ bool Scene::Start()
 	// Buttons
 	uint w, h;
 	app->win->GetWindowSize(w, h);
-	button1 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "BUENAS", { (int)w / 2,(int)h / 2 - 30,100,20 }, this);
-	button2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "R", { (int)w / 2 - 50,(int)h / 2,200,20 }, this);
-	
-
+	//button1 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "BUENAS", { (int)w / 2,(int)h / 2 - 30,100,20 }, this);
+	button2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "RESET", { 450 ,624,120,40 }, this);
+	button2->button = GuiButtontype::RESET;
 
 	//Animation Camera views
 	down.PushBack({ 0, 0, 100, 90 });
@@ -84,6 +81,7 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 
+#pragma region CUBE
 	roll = 0;
 	pitch = 0;
 	yaw = 0;
@@ -181,14 +179,7 @@ bool Scene::Update(float dt)
 	app->render->DrawLine(p5(0), p5(1), p8(0), p8(1), 250, 250, 250, 250);
 	app->render->DrawLine(p6(0), p6(1), p7(0), p7(1), 250, 250, 250, 250);
 	app->render->DrawLine(p7(0), p7(1), p8(0), p8(1), 250, 250, 250, 250);
-
-	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
-	//if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-	//	app->SaveGameRequest();
-	//
-	//if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-	//	app->LoadGameRequest();
-	//
+#pragma	endregion
 	
 	//Controls camera View
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
@@ -209,8 +200,6 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)
 		currentAnim = &back;
 
-	//L15: Draw GUI
-	app->guiManager->Draw();
 
 	// L08: DONE 3: Test World to map method
 
@@ -254,6 +243,26 @@ bool Scene::Update(float dt)
 	SDL_Rect rect2 = currentAnim->GetCurrentFrame();
 	app->render->DrawTexture(cubeTexture, 50, 50, &rect2);
 	currentAnim->Update();
+	app->guiManager->Draw();
+
+	//Draw coordenades of each point
+	std::string string;
+	string = "p1 = " + std::to_string(p1(0)) + ", " + std::to_string(p1(1)) + ", " + std::to_string(p1(2));
+	app->render->DrawText(string.c_str(), 50, 200, 420, 20, { 250, 250, 250 });
+	string = "p2 = " + std::to_string(p2(0)) + ", " + std::to_string(p2(1)) + ", " + std::to_string(p2(2));
+	app->render->DrawText(string.c_str(), 50, 240, 420, 20, { 250, 250, 250 });
+	string = "p3 = " + std::to_string(p3(0)) + ", " + std::to_string(p3(1)) + ", " + std::to_string(p3(2));
+	app->render->DrawText(string.c_str(), 50, 280, 420, 20, { 250, 250, 250 });
+	string = "p4 = " + std::to_string(p4(0)) + ", " + std::to_string(p4(1)) + ", " + std::to_string(p4(2));
+	app->render->DrawText(string.c_str(), 50, 320, 420, 20, { 250, 250, 250 });
+	string = "p5 = " + std::to_string(p5(0)) + ", " + std::to_string(p5(1)) + ", " + std::to_string(p5(2));
+	app->render->DrawText(string.c_str(), 50, 360, 420, 20, { 250, 250, 250 });
+	string = "p6 = " + std::to_string(p6(0)) + ", " + std::to_string(p6(1)) + ", " + std::to_string(p6(2));
+	app->render->DrawText(string.c_str(), 50, 400, 420, 20, { 250, 250, 250 });
+	string = "p7 = " + std::to_string(p7(0)) + ", " + std::to_string(p7(1)) + ", " + std::to_string(p7(2));
+	app->render->DrawText(string.c_str(), 50, 440, 420, 20, { 250, 250, 250 });
+	string = "p8 = " + std::to_string(p8(0)) + ", " + std::to_string(p8(1)) + ", " + std::to_string(p8(2));
+	app->render->DrawText(string.c_str(), 50, 480, 420, 20, { 250, 250, 250 });
 
 	return true;
 }
@@ -311,6 +320,12 @@ Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z) 
 bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	
 
 	return true;
+}
+
+
+void Scene::Reset() {
+
 }

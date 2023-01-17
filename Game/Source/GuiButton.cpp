@@ -41,6 +41,12 @@ bool GuiButton::Update(float dt)
 
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT) {
 				state = GuiControlState::PRESSED;
+				if (button == GuiButtontype::PUSH) {
+
+				}
+				else {
+
+				}
 			}
 
 			//

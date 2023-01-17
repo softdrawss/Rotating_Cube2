@@ -6,6 +6,11 @@
 #include "Point.h"
 #include "SString.h"
 
+enum class GuiButtontype {
+	PUSH,
+	RESET
+};
+
 class GuiButton : public GuiControl
 {
 public:
@@ -23,6 +28,9 @@ public:
 	bool drawBasic = false;
 
 	uint audioFxId;
+
+public:
+	GuiButtontype button;
 };
 
 #endif // __GUIBUTTON_H__

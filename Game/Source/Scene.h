@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "GuiButton.h"
+#include "InpButton.h"
 #include "SDL/include/SDL.h"
 #include "Animation.h"
 #include <vector>
@@ -44,6 +45,7 @@ public:
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 	Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z);
+	void Reset();
 
 public:
 
@@ -66,8 +68,11 @@ private:
 	// L15: DONE 2: Declare a GUI Button and create it using the GuiManager
 	GuiButton* button1; 
 	GuiButton* button2;
-
-
+	//GuiButton* push[4]; //Not sure if I should create another button or just a bool
+	InpButton* q[4];
+	InpButton* euler[4];
+	InpButton* angles[3];
+	InpButton* vector[3];
 
 	SDL_Texture* cubeTexture;
 	SDL_Texture* UI;
