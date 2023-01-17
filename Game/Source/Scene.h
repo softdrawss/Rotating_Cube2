@@ -47,6 +47,20 @@ public:
 	Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z);
 	void Reset();
 
+	Eigen::Matrix3d FixMatrix0s(Eigen::Matrix3d mat);
+
+	Eigen::Vector3d RotationVectorFromAngleAndAxis(double angle, Eigen::Vector3d u);
+
+	Eigen::Vector4d AngleAndAxisFromRotationVector(Eigen::Vector3d r);
+
+	Eigen::Vector4d EulerAndAxisFromQuaternion(Eigen::Vector4d q);
+
+	Eigen::Matrix3d CreateEulerAnglesRotation(double x, double y, double z);
+
+	Eigen::Vector4d QuaternionFromEulerAndAxis(double angle, Eigen::Vector3d u);
+
+	Eigen::Vector3d QuaternionMultiplication(Eigen::Vector3d v, Eigen::Vector4d q);
+
 public:
 
 	//L02: DONE 3: Declare a Player attribute 

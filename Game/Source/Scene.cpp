@@ -13,6 +13,8 @@
 #include "Log.h"
 #include <string>
 
+#define PI 3.141592654
+
 Scene::Scene() : Module()
 {
 	name.Create("scene");
@@ -95,8 +97,8 @@ bool Scene::Update(float dt)
 	center(2) = center(2) / 8;
 
 
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		roll = -0.02;
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
+		roll = -PI/2;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 		roll = 0.02;
@@ -104,14 +106,14 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		pitch = 0.02;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		pitch = -0.02;
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
+		pitch = -PI/2;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
 		yaw = 0.02;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
-		yaw = -0.02;
+	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+		yaw = -PI/2;
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
@@ -313,6 +315,82 @@ Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z) 
 	point(1) = sin(rad) * point(0) + cos(rad) * point(1);
 
 	return point;
+
+}
+
+Eigen::Matrix3d Scene::FixMatrix0s(Eigen::Matrix3d mat) {
+	for (int i = 0; i < 9; i++) {
+		if (abs(mat(i)) < 0.00001) {
+			mat(i) = 0;
+		}
+	}
+	return mat;
+}
+
+Eigen::Vector3d Scene::RotationVectorFromAngleAndAxis(double angle, Eigen::Vector3d u) {
+	Eigen::Vector<double, 3> r;
+	r << angle * u(0), angle* u(1), angle* u(2);
+	return r;
+}
+
+Eigen::Vector4d Scene::AngleAndAxisFromRotationVector(Eigen::Vector3d r) {
+	Eigen::Vector<double, 4> result;
+	result << r.norm(), r(0) / r.norm(), r(1) / r.norm(), r(2) / r.norm();
+	return result;
+}
+
+Eigen::Vector4d Scene::EulerAndAxisFromQuaternion(Eigen::Vector4d q) {
+
+	Eigen::Vector<double, 4>result;
+	result(0) = 2 * (acos(q(0)));
+	result(1) = q(1) / (sin(result(0) / 2));
+	result(2) = q(2) / (sin(result(0) / 2));
+	result(3) = q(3) / (sin(result(0) / 2));
+
+	return result;
+}
+
+Eigen::Matrix3d Scene::CreateEulerAnglesRotation(double x, double y, double z) {
+
+	Eigen::Matrix<double, 3, 3> result;
+	result(0, 0) = cos(y) * cos(z);
+	result(0, 1) = cos(z) * sin(y) * sin(x) - (cos(x) * sin(z));
+	result(0, 2) = cos(x) * cos(z) * sin(y) + (sin(z) * sin(x));
+	result(1, 0) = cos(y) * sin(z);
+	result(1, 1) = sin(z) * sin(y) * sin(x) + (cos(x) * cos(z));
+	result(1, 2) = sin(y) * sin(z) * cos(x) - (cos(z) * sin(x));
+	result(2, 0) = -sin(y);
+	result(2, 1) = cos(y) * sin(x);
+	result(2, 2) = cos(y) * cos(x);
+
+	result = FixMatrix0s(result);
+
+	return result;
+}
+
+Eigen::Vector4d Scene::QuaternionFromEulerAndAxis(double angle, Eigen::Vector3d u) {
+
+	Eigen::Vector<double, 4> q;
+	q << cos(angle / 2), u(0)* sin(angle / 2), u(1)* sin(angle / 2), u(2)* sin(angle / 2);
+
+	return q;
+}
+
+Eigen::Vector3d Scene::QuaternionMultiplication(Eigen::Vector3d v, Eigen::Vector4d q) {
+
+	Eigen::Matrix <double, 3, 3> identity;
+	identity << 1, 0, 0, 0, 1, 0, 0, 0, 1;
+
+	Eigen::Matrix <double, 3, 3> qx;
+	qx << 0, -q(3), q(2), q(3), 0, -q(1), -q(2), q(1), 0;
+
+	Eigen::Vector<double, 3>qv;
+	qv << q(1), q(2), q(3);
+
+	Eigen::Matrix<double, 3, 3>rotationQ;
+	rotationQ = (q(0) * q(0) - qv.transpose() * qv) * identity + 2 * qv * qv.transpose() + 2 * q(0) * qx;
+
+	return rotationQ * v;
 
 }
 
