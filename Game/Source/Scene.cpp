@@ -32,17 +32,6 @@ bool Scene::Awake(pugi::xml_node& config)
 
 	// iterate all objects in the scene
 	// Check https://pugixml.org/docs/quickstart.html#access
-	//for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
-	//{
-	//	Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM);
-	//	item->parameters = itemNode;
-	//}
-	//
-	////L02: DONE 3: Instantiate the player using the entity manager
-	//if (config.child("player")) {
-	//	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
-	//	player->parameters = config.child("player");
-	//}
 	
 	return ret;
 }
@@ -50,12 +39,26 @@ bool Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool Scene::Start()
 {
-	
-	// L15: DONE 2: Declare a GUI Button and create it using the GuiManager
+	//UI
+	cubeTexture = app->tex->Load("Assets/cube.png");
+	UI = app->tex->Load("Assets/UI.png");
+
+	// Buttons
 	uint w, h;
 	app->win->GetWindowSize(w, h);
 	button1 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "BUENAS", { (int)w / 2,(int)h / 2 - 30,100,20 }, this);
 	button2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "R", { (int)w / 2 - 50,(int)h / 2,200,20 }, this);
+	
+
+
+	//Animation Camera views
+	down.PushBack({ 0, 0, 100, 90 });
+	left.PushBack({ 100, 0, 100, 90 });
+	right.PushBack({ 100 *2, 0, 100, 90 });
+	back.PushBack({ 100 *3, 0, 100, 90 });
+	front.PushBack({ 100 *4, 0, 100, 90 });
+	up.PushBack({ 100 *5, 0, 100, 90 });
+	currentAnim = &front;
 
 	p1 << 100, 100, 100;
 	p2 << 200, 100, 100;
@@ -66,6 +69,7 @@ bool Scene::Start()
 	p6 << 200, 100, 200;
 	p7 << 200, 200, 200;
 	p8 << 100, 200, 200;
+
 
 	return true;
 }
@@ -79,6 +83,7 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
+
 	roll = 0;
 	pitch = 0;
 	yaw = 0;
@@ -184,22 +189,25 @@ bool Scene::Update(float dt)
 	//if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 	//	app->LoadGameRequest();
 	//
-	//// L14: DONE 4: Make the camera movement independent of framerate
-	//float speed = 0.2 * dt;
-	//if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-	//	app->render->camera.y += ceil(speed);
-	//
-	//if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	//	app->render->camera.y -= ceil(speed);
-	//
-	//if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	//	app->render->camera.x += ceil(speed);
-	//
-	//if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	//	app->render->camera.x -= ceil(speed);
+	
+	//Controls camera View
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+		currentAnim = &up;
+	
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		currentAnim = &down;
+	
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		currentAnim = &left;
+	
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		currentAnim = &right;
 
-	// Draw map
-	//app->map->Draw();
+	if (app->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
+		currentAnim = &front;
+
+	if (app->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)
+		currentAnim = &back;
 
 	//L15: Draw GUI
 	app->guiManager->Draw();
@@ -240,19 +248,12 @@ bool Scene::Update(float dt)
 			app->pathfinding->ClearLastPath();
 		}
 	}
-
-	// L12: Get the latest calculated path and draw
-	const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
-	for (uint i = 0; i < path->Count(); ++i)
-	{
-		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		app->render->DrawTexture(mouseTileTex, pos.x, pos.y);
-	}
-
-	// L12: Debug pathfinding
-	iPoint originScreen = app->map->MapToWorld(origin.x, origin.y);
-	app->render->DrawTexture(originTex, originScreen.x, originScreen.y);
 	*/
+
+	app->render->DrawTexture(UI, 0, 0);
+	SDL_Rect rect2 = currentAnim->GetCurrentFrame();
+	app->render->DrawTexture(cubeTexture, 50, 50, &rect2);
+	currentAnim->Update();
 
 	return true;
 }

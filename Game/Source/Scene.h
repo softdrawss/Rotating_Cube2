@@ -3,8 +3,9 @@
 
 #include "Module.h"
 #include "GuiButton.h"
-#include <vector>
 #include "SDL/include/SDL.h"
+#include "Animation.h"
+#include <vector>
 #include <eigen/Eigen/Core>
 #include <eigen/Eigen/Dense>
 #include <math.h>
@@ -66,8 +67,16 @@ private:
 	GuiButton* button1; 
 	GuiButton* button2;
 
+
+
+	SDL_Texture* cubeTexture;
+	SDL_Texture* UI;
+	Animation down, left, right, back, front, up;
+	Animation* currentAnim = nullptr;
+
 	Eigen::Vector3f p1, p2, p3, p4, p5, p6, p7, p8;
 	Eigen::Vector3f center;
+
 };
 
 #endif // __SCENE_H__

@@ -6,7 +6,7 @@
 #include "Point.h"
 #include "SString.h"
 
-class InpButton : public InpControl
+class InpButton : public GuiControl
 {
 public:
 

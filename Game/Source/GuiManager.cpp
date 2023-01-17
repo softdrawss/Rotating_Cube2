@@ -3,6 +3,7 @@
 #include "Textures.h"
 
 #include "GuiButton.h"
+#include "InpButton.h"
 #include "Audio.h"
 
 GuiManager::GuiManager() :Module()
@@ -44,6 +45,7 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char
 		break;*/
 
 	case GuiControlType::INPUTBOX:
+		guiControl = new InpButton(id, bounds, text);
 		break;
 	/*
 	case GuiControlType::VALUEBOX:
