@@ -47,6 +47,7 @@ public:
 	Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z);
 	void Reset();
 
+
 	Eigen::Matrix3d FixMatrix0s(Eigen::Matrix3d mat);
 
 	Eigen::Vector3d RotationVectorFromAngleAndAxis(double angle, Eigen::Vector3d u);

@@ -59,16 +59,7 @@ bool Scene::Start()
 	up.PushBack({ 100 *5, 0, 100, 90 });
 	currentAnim = &front;
 
-	p1 << 100, 100, 100;
-	p2 << 200, 100, 100;
-	p3 << 200, 200, 100;
-	p4 << 100, 200, 100;
-
-	p5 << 100, 100, 200;
-	p6 << 200, 100, 200;
-	p7 << 200, 200, 200;
-	p8 << 100, 200, 200;
-
+	Reset();
 
 	return true;
 }
@@ -97,8 +88,8 @@ bool Scene::Update(float dt)
 	center(2) = center(2) / 8;
 
 
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
-		roll = -PI/2;
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+		roll = -0.02;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 		roll = 0.02;
@@ -106,26 +97,14 @@ bool Scene::Update(float dt)
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		pitch = 0.02;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN) {
-		pitch = -PI/2;
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		roll = -0.02;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
 		yaw = 0.02;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-		yaw = -PI/2;
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
-		p1 << 100, 100, 100;
-		p2 << 200, 100, 100;
-		p3 << 200, 200, 100;
-		p4 << 100, 200, 100;
-		p5 << 100, 100, 200;
-		p6 << 200, 100, 200;
-		p7 << 200, 200, 200;
-		p8 << 100, 200, 200;
-		LOG("Rotation reset");
+	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
+		roll = -0.02;
 	}
 
 	p1 -= center;
@@ -183,24 +162,24 @@ bool Scene::Update(float dt)
 	app->render->DrawLine(p7(0), p7(1), p8(0), p8(1), 250, 250, 250, 250);
 #pragma	endregion
 	
-	//Controls camera View
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
-		currentAnim = &up;
-	
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-		currentAnim = &down;
-	
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		currentAnim = &left;
-	
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-		currentAnim = &right;
+	////Controls camera View
+	//if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+	//	currentAnim = &up;
+	//
+	//if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	//	currentAnim = &down;
+	//
+	//if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	//	currentAnim = &left;
+	//
+	//if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	//	currentAnim = &right;
 
-	if (app->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
-		currentAnim = &front;
+	//if (app->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
+	//	currentAnim = &front;
 
-	if (app->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)
-		currentAnim = &back;
+	//if (app->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)
+	//	currentAnim = &back;
 
 
 	// L08: DONE 3: Test World to map method
@@ -242,29 +221,29 @@ bool Scene::Update(float dt)
 	*/
 
 	app->render->DrawTexture(UI, 0, 0);
-	SDL_Rect rect2 = currentAnim->GetCurrentFrame();
-	app->render->DrawTexture(cubeTexture, 50, 50, &rect2);
-	currentAnim->Update();
+	//SDL_Rect rect2 = currentAnim->GetCurrentFrame();
+	//app->render->DrawTexture(cubeTexture, 50, 50, &rect2);
+	//currentAnim->Update();
 	app->guiManager->Draw();
 
 	//Draw coordenades of each point
 	std::string string;
 	string = "p1 = " + std::to_string(p1(0)) + ", " + std::to_string(p1(1)) + ", " + std::to_string(p1(2));
-	app->render->DrawText(string.c_str(), 50, 200, 420, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 200, 390, 20, { 250, 250, 250 });
 	string = "p2 = " + std::to_string(p2(0)) + ", " + std::to_string(p2(1)) + ", " + std::to_string(p2(2));
-	app->render->DrawText(string.c_str(), 50, 240, 420, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 220, 390, 20, { 250, 250, 250 });
 	string = "p3 = " + std::to_string(p3(0)) + ", " + std::to_string(p3(1)) + ", " + std::to_string(p3(2));
-	app->render->DrawText(string.c_str(), 50, 280, 420, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 240, 390, 20, { 250, 250, 250 });
 	string = "p4 = " + std::to_string(p4(0)) + ", " + std::to_string(p4(1)) + ", " + std::to_string(p4(2));
-	app->render->DrawText(string.c_str(), 50, 320, 420, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 260, 390, 20, { 250, 250, 250 });
 	string = "p5 = " + std::to_string(p5(0)) + ", " + std::to_string(p5(1)) + ", " + std::to_string(p5(2));
-	app->render->DrawText(string.c_str(), 50, 360, 420, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 280, 390, 20, { 250, 250, 250 });
 	string = "p6 = " + std::to_string(p6(0)) + ", " + std::to_string(p6(1)) + ", " + std::to_string(p6(2));
-	app->render->DrawText(string.c_str(), 50, 400, 420, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 300, 390, 20, { 250, 250, 250 });
 	string = "p7 = " + std::to_string(p7(0)) + ", " + std::to_string(p7(1)) + ", " + std::to_string(p7(2));
-	app->render->DrawText(string.c_str(), 50, 440, 420, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 320, 390, 20, { 250, 250, 250 });
 	string = "p8 = " + std::to_string(p8(0)) + ", " + std::to_string(p8(1)) + ", " + std::to_string(p8(2));
-	app->render->DrawText(string.c_str(), 50, 480, 420, 20, { 250, 250, 250 });
+	app->render->DrawText(string.c_str(), 50, 305 + 340, 390, 20, { 250, 250, 250 });
 
 	return true;
 }
@@ -405,5 +384,14 @@ bool Scene::CleanUp()
 
 
 void Scene::Reset() {
+	p1 << 100, 100, 100;
+	p2 << 300, 100, 100;
+	p3 << 300, 300, 100;
+	p4 << 100, 300, 100;
+	p5 << 100, 100, 300;
+	p6 << 300, 100, 300;
+	p7 << 300, 300, 300;
+	p8 << 100, 300, 300;
+
 
 }

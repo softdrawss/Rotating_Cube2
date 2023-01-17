@@ -3,6 +3,7 @@
 #include "App.h"
 #include "Audio.h"
 #include "Log.h"
+#include "Scene.h"
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
 {
@@ -44,8 +45,8 @@ bool GuiButton::Update(float dt)
 				if (button == GuiButtontype::PUSH) {
 
 				}
-				else {
-
+				if (button == GuiButtontype::RESET) {
+					app->scene->Reset();
 				}
 			}
 
@@ -78,10 +79,10 @@ bool GuiButton::Draw(Render* render)
 		render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
 		break;
 	case GuiControlState::FOCUSED:
-		render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
+		render->DrawRectangle(bounds, 153, 153, 255, 255, true, false);
 		break;
 	case GuiControlState::PRESSED:
-		render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
+		render->DrawRectangle(bounds, 0, 255, 0, 225, true, false);
 		break;
 	}
 
