@@ -9,7 +9,9 @@
 #include "Map.h"
 #include "PathFinding.h"
 #include "GuiManager.h"
-
+#include <eigen/Eigen/Core>
+#include <eigen/Eigen/Dense>
+#include <math.h>
 #include "Defs.h"
 #include "Log.h"
 
@@ -48,6 +50,7 @@ bool Scene::Start()
 	button2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "R", { (int)w / 2 - 50,(int)h / 2,200,20 }, this);
 	
 
+
 	//Animation Camera views
 	down.PushBack({ 0, 0, 100, 90 });
 	left.PushBack({ 100, 0, 100, 90 });
@@ -56,6 +59,17 @@ bool Scene::Start()
 	front.PushBack({ 100 *4, 0, 100, 90 });
 	up.PushBack({ 100 *5, 0, 100, 90 });
 	currentAnim = &front;
+
+	p1 << 100, 100, 100;
+	p2 << 200, 100, 100;
+	p3 << 200, 200, 100;
+	p4 << 100, 200, 100;
+
+	p5 << 100, 100, 200;
+	p6 << 200, 100, 200;
+	p7 << 200, 200, 200;
+	p8 << 100, 200, 200;
+
 
 	return true;
 }
@@ -69,8 +83,105 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	
-	//app->render->DrawLine(50, 50, 50, 300, 250, 250, 250, 250);
+
+	roll = 0;
+	pitch = 0;
+	yaw = 0;
+
+	center << p1(0) + p2(0) + p3(0) + p4(0) + p5(0) + p6(0) + p7(0) + p8(0),
+		p1(1) + p2(1) + p3(1) + p4(1) + p5(1) + p6(1) + p7(1) + p8(1),
+		p1(2) + p2(2) + p3(2) + p4(2) + p5(2) + p6(2) + p7(2) + p8(2);
+
+	center(0) = center(0) / 8;
+	center(1) = center(1) / 8;
+	center(2) = center(2) / 8;
+
+
+	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+		roll = -0.02;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+		roll = 0.02;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+		pitch = 0.02;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+		pitch = -0.02;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+		yaw = 0.02;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
+		yaw = -0.02;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+		p1 << 100, 100, 100;
+		p2 << 200, 100, 100;
+		p3 << 200, 200, 100;
+		p4 << 100, 200, 100;
+		p5 << 100, 100, 200;
+		p6 << 200, 100, 200;
+		p7 << 200, 200, 200;
+		p8 << 100, 200, 200;
+		LOG("Rotation reset");
+	}
+
+	p1 -= center;
+	p1 = Rotate(p1, roll, pitch, yaw);
+	p1 += center;
+
+	p2 -= center;
+	p2 = Rotate(p2, roll, pitch, yaw);
+	p2 += center;
+
+	p3 -= center;
+	p3 = Rotate(p3, roll, pitch, yaw);
+	p3 += center;
+
+	p4 -= center;
+	p4 = Rotate(p4, roll, pitch, yaw);
+	p4 += center;
+
+	p5 -= center;
+	p5 = Rotate(p5, roll, pitch, yaw);
+	p5 += center;
+
+	p6 -= center;
+	p6 = Rotate(p6, roll, pitch, yaw);
+	p6 += center;
+
+	p7 -= center;
+	p7 = Rotate(p7, roll, pitch, yaw);
+	p7 += center;
+
+	p8 -= center;
+	p8 = Rotate(p8, roll, pitch, yaw);
+	p8 += center;
+
+	//SDL_RenderDrawPoint(app->render->renderer, p1(0), p1(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p2(0), p2(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p3(0), p3(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p4(0), p4(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p5(0), p5(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p6(0), p6(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p7(0), p7(1));
+	//SDL_RenderDrawPoint(app->render->renderer, p8(0), p8(1));
+
+	app->render->DrawLine(p1(0), p1(1), p2(0), p2(1), 250, 250, 250, 250);
+	app->render->DrawLine(p1(0), p1(1), p4(0), p4(1), 0, 250, 0, 250);
+	app->render->DrawLine(p1(0), p1(1), p5(0), p5(1), 250, 250, 250, 250);
+	app->render->DrawLine(p2(0), p2(1), p3(0), p3(1), 250, 250, 250, 250);
+	app->render->DrawLine(p2(0), p2(1), p6(0), p6(1), 250, 250, 250, 250);
+	app->render->DrawLine(p3(0), p3(1), p7(0), p7(1), 250, 250, 250, 250);
+	app->render->DrawLine(p3(0), p3(1), p4(0), p4(1), 0, 0, 250, 250);
+	app->render->DrawLine(p4(0), p4(1), p8(0), p8(1), 250, 0, 0, 250);
+	app->render->DrawLine(p5(0), p5(1), p6(0), p6(1), 250, 250, 250, 250);
+	app->render->DrawLine(p5(0), p5(1), p8(0), p8(1), 250, 250, 250, 250);
+	app->render->DrawLine(p6(0), p6(1), p7(0), p7(1), 250, 250, 250, 250);
+	app->render->DrawLine(p7(0), p7(1), p8(0), p8(1), 250, 250, 250, 250);
+
 	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
 	//if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 	//	app->SaveGameRequest();
@@ -174,6 +285,26 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 	}
 
 	return true;
+
+}
+
+Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z) {
+	float rad = 0;
+
+	rad = x;
+	point(1) = cos(rad) * point(1) - sin(rad) * point(2);
+	point(2) = sin(rad) * point(1) + cos(rad) * point(2);
+
+	rad = y;
+	point(0) = cos(rad) * point(0) + sin(rad) * point(2);
+	point(2) = -sin(rad) * point(0) + cos(rad) * point(2);
+
+	rad = z;
+	point(0) = cos(rad) * point(0) - sin(rad) * point(1);
+	point(1) = sin(rad) * point(0) + cos(rad) * point(1);
+
+	return point;
+
 }
 
 // Called before quitting

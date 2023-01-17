@@ -3,9 +3,13 @@
 
 #include "Module.h"
 #include "GuiButton.h"
-#include <vector>
 #include "SDL/include/SDL.h"
 #include "Animation.h"
+#include <vector>
+#include <eigen/Eigen/Core>
+#include <eigen/Eigen/Dense>
+#include <math.h>
+
 
 struct SDL_Texture;
 
@@ -39,10 +43,16 @@ public:
 	// Define multiple Gui Event methods
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
+	Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z);
+
 public:
 
 	//L02: DONE 3: Declare a Player attribute 
 	//Player* player;
+
+	float roll;   //X Rotation
+	float pitch;  //Y Rotation
+	float yaw;    //Z Rotation
 
 private:
 	SDL_Texture* img;
@@ -57,12 +67,15 @@ private:
 	GuiButton* button1; 
 	GuiButton* button2;
 
-	fPoint p1, p2, p3, p4, p5, p6, p7, p8;
+
 
 	SDL_Texture* cubeTexture;
 	SDL_Texture* UI;
 	Animation down, left, right, back, front, up;
 	Animation* currentAnim = nullptr;
+
+	Eigen::Vector3f p1, p2, p3, p4, p5, p6, p7, p8;
+	Eigen::Vector3f center;
 
 };
 
