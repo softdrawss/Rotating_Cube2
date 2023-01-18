@@ -48,28 +48,35 @@ public:
 	
 	Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z);
 
-	Eigen::Matrix3d FixMatrix0s(Eigen::Matrix3d mat);
+	Eigen::Matrix3f FixMatrix0s(Eigen::Matrix3f mat);
 
-	Eigen::Vector3d RotationVectorFromAngleAndAxis(double angle, Eigen::Vector3d u);
+	Eigen::Vector3f RotationVectorFromAngleAndAxis(float angle, Eigen::Vector3f u);
 
-	Eigen::Vector4d AngleAndAxisFromRotationVector(Eigen::Vector3d r);
+	Eigen::Vector4f AngleAndAxisFromRotationVector(Eigen::Vector3f r);
 
-	Eigen::Vector4d EulerAndAxisFromQuaternion(Eigen::Vector4d q);
+	Eigen::Vector4f EulerAndAxisFromQuaternion(Eigen::Vector4f q);
 
-	Eigen::Matrix3d CreateEulerAnglesRotation(double x, double y, double z);
+	Eigen::Matrix3f CreateEulerAnglesRotation(float x, float y, float z);
 
-	Eigen::Vector4d QuaternionFromEulerAndAxis(double angle, Eigen::Vector3d u);
+	Eigen::Vector4f QuaternionFromEulerAngles(float x, float y, float z);
 
-	Eigen::Vector3d QuaternionMultiplication(Eigen::Vector3d v, Eigen::Vector4d q);
+	Eigen::Vector4f AngleAndAxisFromRotationMatrix(Eigen::Matrix3f r);
+
+	Eigen::Vector4f QuaternionFromEulerAndAxis(float angle, Eigen::Vector3f u);
+
+	Eigen::Vector3f QuaternionMultiplication(Eigen::Vector3f v, Eigen::Vector4f q);
+
+	Eigen::Vector3f RotateQ(Eigen::Vector3f v, Eigen::Vector4f q);
 
 public:
 
-	//L02: DONE 3: Declare a Player attribute 
-	//Player* player;
-
-	float roll;   //X Rotation
-	float pitch;  //Y Rotation
-	float yaw;    //Z Rotation
+	float roll;						//X Rotation
+	float pitch;					//Y Rotation
+	float yaw;						//Z Rotation
+	//Eigen::Matrix3f matrix;		//Rotation Matrix
+	Eigen::Vector4f qtn;			//Quaternion
+	//Eigen::Vector3f rVector;		//Rotation Vector
+	//Eigen::Vector4f angleAndAxis;	//Rotation Axis and Angle
 
 	GuiButton* p[4]; 
 	GuiButton* button2;
@@ -97,7 +104,7 @@ private:
 
 	Eigen::Vector3f p1, p2, p3, p4, p5, p6, p7, p8;
 	Eigen::Vector3f center;
-	Eigen::Matrix3f matrix;
+
 };
 
 #endif // __SCENE_H__
