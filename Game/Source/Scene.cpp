@@ -216,6 +216,8 @@ bool Scene::Update(float dt)
 		angleAndAxis(2) = dircopia(2);
 		angleAndAxis(3) = Angle2Vectors(director, directorref);
 
+		rmatrix = CreateRotationMatrix(angleAndAxis(3), { angleAndAxis(0), angleAndAxis(1), angleAndAxis(2) });
+
 		for (int i = 0; i < 4; i++) {
 			e[i]->input = std::to_string(angleAndAxis(i));
 		}
@@ -301,23 +303,23 @@ bool Scene::Update(float dt)
 	app->render->DrawText(string.c_str(), 50, 305 + 340, 390, 20, { 204, 204, 204 });
 
 	//Draw matrix
-	string = std::to_string(p1(2));
+	string = std::to_string(rmatrix(0));
 	app->render->DrawText(string.c_str(), 730, 570, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p2(2));
+	string = std::to_string(rmatrix(1));
 	app->render->DrawText(string.c_str(), 730, 600, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p3(2));
+	string = std::to_string(rmatrix(2));
 	app->render->DrawText(string.c_str(), 730, 630, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p4(2));
+	string = std::to_string(rmatrix(3));
 	app->render->DrawText(string.c_str(), 870, 570, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p5(2));
+	string = std::to_string(rmatrix(4));
 	app->render->DrawText(string.c_str(), 870, 600, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p6(2));
+	string = std::to_string(rmatrix(5));
 	app->render->DrawText(string.c_str(), 870, 630, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p7(2));
+	string = std::to_string(rmatrix(6));
 	app->render->DrawText(string.c_str(), 1010, 570, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p8(2));
+	string = std::to_string(rmatrix(7));
 	app->render->DrawText(string.c_str(), 1010, 600, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p1(2));
+	string = std::to_string(rmatrix(8));
 	app->render->DrawText(string.c_str(), 1010, 630, 120, 25, { 204, 204, 204 });
 
 #pragma endregion UI
@@ -362,6 +364,22 @@ Eigen::Matrix3f Scene::FixMatrix0s(Eigen::Matrix3f mat) {
 		}
 	}
 	return mat;
+}
+
+Eigen::Matrix3f Scene::CreateRotationMatrix(float angle, Eigen::Vector3f u) {
+
+	Eigen::Matrix <float, 3, 3> identity;
+	identity << 1, 0, 0, 0, 1, 0, 0, 0, 1;
+
+	Eigen::Matrix <float, 3, 3> ux;
+	ux << 0, -u(2), u(1), u(2), 0, -u(0), -u(1), u(0), 0;
+
+	Eigen::Matrix <float, 3, 3> result;
+	result = identity * cos(angle) + (1 - cos(angle)) * (u * u.transpose()) + ux * sin(angle);
+
+	result = FixMatrix0s(result);
+
+	return result;
 }
 
 Eigen::Vector3f Scene::RotationVectorFromAngleAndAxis(float angle, Eigen::Vector3f u) {

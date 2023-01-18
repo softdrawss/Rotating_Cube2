@@ -48,6 +48,8 @@ public:
 
 	Eigen::Matrix3f FixMatrix0s(Eigen::Matrix3f mat);
 
+	Eigen::Matrix3f CreateRotationMatrix(float angle, Eigen::Vector3f u);
+
 	Eigen::Vector3f RotationVectorFromAngleAndAxis(float angle, Eigen::Vector3f u);
 
 	Eigen::Vector4f AngleAndAxisFromRotationVector(Eigen::Vector3f r);
