@@ -15,7 +15,7 @@ InpButton::InpButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(
 	drawBasic = false;
 
 	//audioFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
-	state = GuiControlState::NORMAL;
+	//state = GuiControlState::NORMAL;
 	input = "0.00000";
 	renderText = false;
 }
@@ -29,8 +29,7 @@ bool InpButton::Update(float dt)
 	renderText = false;
 	SDL_Event e;
 
-	if (state != GuiControlState::DISABLED)
-	{
+	
 		// L15: DONE 3: Update the state of the GUiButton according to the mouse position
 		app->input->GetMousePosition(mouseX, mouseY);
 
@@ -51,7 +50,11 @@ bool InpButton::Update(float dt)
 				app->scene->isButtonPressed = true;
 				SDL_StartTextInput();
 
-			}
+			}			
+		}
+		if (!(mouseX >= bounds.x && mouseX <= bounds.x + bounds.w &&
+			mouseY >= bounds.y && mouseY <= bounds.y + bounds.h) && (state == GuiControlState::NORMAL) && app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP) {
+			state = GuiControlState::DISABLED;
 
 		}
 		if (state == GuiControlState::PRESSED) {
@@ -110,10 +113,7 @@ bool InpButton::Update(float dt)
 
 			}
 		}
-		else {
-			
-		}
-	}
+	
 
 	return false;
 }

@@ -217,7 +217,7 @@ bool Scene::Update(float dt)
 		angleAndAxis(3) = Angle2Vectors(director, directorref);
 
 		for (int i = 0; i < 4; i++) {
-			e[i]->input = std::to_string(angleAndAxis(i));
+			//e[i]->input = std::to_string(angleAndAxis(i));
 		}
 
 		p1 -= center;
