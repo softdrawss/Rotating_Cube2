@@ -205,13 +205,24 @@ bool Scene::Update(float dt)
 		}
 	}
 
-	for (int i = 0; i < 4; i++) {
-		q[i]->input = std::to_string(qtn(i));
+	for (int i = 1; i < 4; i++) {
+		auxq(i) += qtn(i);
+		if(auxq(i) >= 1){
+			auxq(i) = -auxq(i) + (1 - auxq(i));
+		}
 	}
 
+	rqtn = auxq;
+	rqtn.normalize();
 
-	if (qtn(0) == 1) {
+	for (int i = 0; i < 4; i++) {
+		q[i]->input = std::to_string(rqtn(i));
+	}
 
+	angleAndAxis = AngleAndAxisFromQuaternion(rqtn);
+
+	for (int i = 0; i < 4; i++) {
+		e[i]->input = std::to_string(angleAndAxis(i));
 	}
 
 	p1 -= center;
@@ -437,10 +448,10 @@ Eigen::Vector4f Scene::AngleAndAxisFromQuaternion(Eigen::Vector4f q) {
 	}
 
 	Eigen::Vector<float, 4> u;
-	u(0) = 2 * acos(q(0));
-	u(1) = q(1) / (sqrt(1 - (q(0) * q(0))));
-	u(2) = q(2) / (sqrt(1 - (q(0) * q(0))));
-	u(3) = q(3) / (sqrt(1 - (q(0) * q(0))));
+	u(0) = q(1) / (sqrt(1 - (q(0) * q(0))));
+	u(1) = q(2) / (sqrt(1 - (q(0) * q(0))));
+	u(2) = q(3) / (sqrt(1 - (q(0) * q(0))));
+	u(3) = 2 * acos(q(0));
 
 	return u;
 }
@@ -488,5 +499,6 @@ void Scene::Reset() {
 	p7 << 400, 400, 400;
 	p8 << 200, 400, 400;
 
-
+	rqtn << 1, 0, 0, 0;
+	auxq << 1, 0, 0, 0;
 }

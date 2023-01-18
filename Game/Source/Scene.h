@@ -71,6 +71,7 @@ public:
 public:
 
 	Eigen::Vector4f qtn;
+	Eigen::Vector4f auxq;
 
 	float roll;						//X Rotation
 	float pitch;					//Y Rotation
