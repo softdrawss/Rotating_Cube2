@@ -48,6 +48,10 @@ public:
 
 	Eigen::Matrix3f FixMatrix0s(Eigen::Matrix3f mat);
 
+	bool CompareFMatrices(Eigen::MatrixXf m1, Eigen::MatrixXf m2);
+
+	Eigen::Matrix3f CreateRotationMatrix(float angle, Eigen::Vector3f u);
+
 	Eigen::Vector3f RotationVectorFromAngleAndAxis(float angle, Eigen::Vector3f u);
 
 	Eigen::Vector4f AngleAndAxisFromRotationVector(Eigen::Vector3f r);
@@ -55,6 +59,8 @@ public:
 	Eigen::Vector4f EulerAndAxisFromQuaternion(Eigen::Vector4f q);
 
 	Eigen::Matrix3f CreateEulerAnglesRotation(float x, float y, float z);
+
+	Eigen::Vector3f EulerAnglesFromRotationMatrix(Eigen::Matrix3f r);
 
 	Eigen::Vector4f QuaternionFromEulerAngles(float x, float y, float z);
 
@@ -76,9 +82,7 @@ public:
 	Eigen::Vector3f director;
 	Eigen::Vector3f directorref;
 
-	float roll;						//X Rotation
-	float pitch;					//Y Rotation
-	float yaw;						//Z Rotation
+	Eigen::Vector3f eangles;		//XYZ Rotation
 	Eigen::Matrix3f rmatrix;		//Rotation Matrix
 	Eigen::Vector4f rqtn;			//Rotation Quaternion
 	Eigen::Vector3f rVector;		//Rotation Vector

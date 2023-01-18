@@ -15,7 +15,7 @@
 #include "GuiButton.h"
 #include "SString.h"
 
-#define PI 3.141592654
+#define PI 3.14159265358979323846264338327950288
 
 Scene::Scene() : Module()
 {
@@ -117,10 +117,6 @@ bool Scene::Update(float dt)
 
 	if (!isButtonPressed) {
 
-		roll = 0;
-		pitch = 0;
-		yaw = 0;
-
 		qtn << 1, 0, 0, 0;
 
 		center << p1(0) + p2(0) + p3(0) + p4(0) + p5(0) + p6(0) + p7(0) + p8(0),
@@ -209,6 +205,7 @@ bool Scene::Update(float dt)
 			}
 		}
 
+		//Calculating Axis and Angle
 		Eigen::Vector<float, 3>dircopia = director.normalized();
 
 		angleAndAxis(0) = dircopia(0);
@@ -216,8 +213,30 @@ bool Scene::Update(float dt)
 		angleAndAxis(2) = dircopia(2);
 		angleAndAxis(3) = Angle2Vectors(director, directorref);
 
+		//Calculating everything else with the axis and angle
+		rmatrix = CreateRotationMatrix(angleAndAxis(3), { angleAndAxis(0), angleAndAxis(1), angleAndAxis(2) });
+		rVector = RotationVectorFromAngleAndAxis(angleAndAxis(3), { angleAndAxis(0), angleAndAxis(1), angleAndAxis(2) });
+		rqtn = QuaternionFromEulerAndAxis(angleAndAxis(3), { angleAndAxis(0), angleAndAxis(1), angleAndAxis(2) });
+		eangles = EulerAnglesFromRotationMatrix(rmatrix);
+
+		//Angle and Axis print
 		for (int i = 0; i < 4; i++) {
 			//e[i]->input = std::to_string(angleAndAxis(i));
+		}
+
+		//Rotation Vector print
+		for (int i = 0; i < 3; i++) {
+			v[i]->input = std::to_string(rVector(i));
+		}
+
+		//Quaternion print
+		for (int i = 0; i < 4; i++) {
+			q[i]->input = std::to_string(rqtn(i));
+		}
+
+		//Euler angles print
+		for (int i = 0; i < 3; i++) {
+			a[i]->input = std::to_string(eangles(i));
 		}
 
 		p1 -= center;
@@ -301,23 +320,23 @@ bool Scene::Update(float dt)
 	app->render->DrawText(string.c_str(), 50, 305 + 340, 390, 20, { 204, 204, 204 });
 
 	//Draw matrix
-	string = std::to_string(p1(2));
+	string = std::to_string(rmatrix(0));
 	app->render->DrawText(string.c_str(), 730, 570, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p2(2));
+	string = std::to_string(rmatrix(1));
 	app->render->DrawText(string.c_str(), 730, 600, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p3(2));
+	string = std::to_string(rmatrix(2));
 	app->render->DrawText(string.c_str(), 730, 630, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p4(2));
+	string = std::to_string(rmatrix(3));
 	app->render->DrawText(string.c_str(), 870, 570, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p5(2));
+	string = std::to_string(rmatrix(4));
 	app->render->DrawText(string.c_str(), 870, 600, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p6(2));
+	string = std::to_string(rmatrix(5));
 	app->render->DrawText(string.c_str(), 870, 630, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p7(2));
+	string = std::to_string(rmatrix(6));
 	app->render->DrawText(string.c_str(), 1010, 570, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p8(2));
+	string = std::to_string(rmatrix(7));
 	app->render->DrawText(string.c_str(), 1010, 600, 120, 25, { 204, 204, 204 });
-	string = std::to_string(p1(2));
+	string = std::to_string(rmatrix(8));
 	app->render->DrawText(string.c_str(), 1010, 630, 120, 25, { 204, 204, 204 });
 
 #pragma endregion UI
@@ -364,6 +383,34 @@ Eigen::Matrix3f Scene::FixMatrix0s(Eigen::Matrix3f mat) {
 	return mat;
 }
 
+bool Scene::CompareFMatrices(Eigen::MatrixXf m1, Eigen::MatrixXf m2) {
+
+	for (int i = 0; i < 9; i++) {
+		if (!(abs(m1(i)) <= abs(m2(i)) + 0.0025f
+			&& abs(m1(i)) >= abs(m2(i)) - 0.0025f
+			&& !(m1(i) > 0 && m2(i) < 0) || (m1(i) < 0 && m2(i) > 0))) {
+			return false;
+		}
+	}
+	return true;
+}
+
+Eigen::Matrix3f Scene::CreateRotationMatrix(float angle, Eigen::Vector3f u) {
+
+	Eigen::Matrix <float, 3, 3> identity;
+	identity << 1, 0, 0, 0, 1, 0, 0, 0, 1;
+
+	Eigen::Matrix <float, 3, 3> ux;
+	ux << 0, -u(2), u(1), u(2), 0, -u(0), -u(1), u(0), 0;
+
+	Eigen::Matrix <float, 3, 3> result;
+	result = identity * cos(angle) + (1 - cos(angle)) * (u * u.transpose()) + ux * sin(angle);
+
+	result = FixMatrix0s(result);
+
+	return result;
+}
+
 Eigen::Vector3f Scene::RotationVectorFromAngleAndAxis(float angle, Eigen::Vector3f u) {
 	Eigen::Vector<float, 3> r;
 	r << angle * u(0), angle* u(1), angle* u(2);
@@ -403,6 +450,24 @@ Eigen::Matrix3f Scene::CreateEulerAnglesRotation(float x, float y, float z) {
 	result = FixMatrix0s(result);
 
 	return result;
+}
+
+Eigen::Vector3f Scene::EulerAnglesFromRotationMatrix(Eigen::Matrix3f m) {
+
+	Eigen::Vector <float, 3> angles;
+		float roll, pitch, yaw;
+		pitch = asin(-m(2, 0));
+		if (abs(atan(m(2, 1) / m(2, 2))) < 1E-8 || abs(atan(m(1, 0) / m(0, 0))) < 1E-8) {
+			roll = acos(m(2, 2) / cos(pitch));
+			yaw = acos(m(0, 0) / cos(pitch));
+		}
+		else {
+			roll = atan(m(2, 1) / m(2, 2));
+			yaw = atan(m(1, 0) / m(0, 0));
+		}
+		angles << roll, pitch, yaw;
+
+	return angles;
 }
 
 Eigen::Vector4f Scene::QuaternionFromEulerAngles(float roll, float pitch, float yaw) {
