@@ -60,7 +60,7 @@ public:
 
 	Eigen::Vector4f EulerAndAxisFromQuaternion(Eigen::Vector4f q);
 
-	Eigen::Matrix3f CreateEulerAnglesRotation(float x, float y, float z);
+	Eigen::Matrix3f CreateEulerAnglesRotation(float psi, float theta, float phi);
 
 	Eigen::Vector3f EulerAnglesFromRotationMatrix(Eigen::Matrix3f r);
 

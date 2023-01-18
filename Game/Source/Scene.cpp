@@ -124,9 +124,9 @@ bool Scene::Update(float dt)
 		float aux2 = 0.99959991996;
 		float aux3 = 0.99939981989;
 
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT ||
+		if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT ||
 			app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT ||
-			app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
+			app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 			ControlRotation();
 		}
 	}
@@ -289,50 +289,53 @@ Eigen::Vector4f Scene::EulerAndAxisFromQuaternion(Eigen::Vector4f q) {
 	return result;
 }
 
-Eigen::Matrix3f Scene::CreateEulerAnglesRotation(float x, float y, float z) {
+Eigen::Matrix3f Scene::CreateEulerAnglesRotation(float psi, float theta, float phi) {
 
-	Eigen::Matrix<float, 3, 3> result;
-	result(0, 0) = cos(y) * cos(z);
-	result(0, 1) = cos(z) * sin(y) * sin(x) - (cos(x) * sin(z));
-	result(0, 2) = cos(x) * cos(z) * sin(y) + (sin(z) * sin(x));
-	result(1, 0) = cos(y) * sin(z);
-	result(1, 1) = sin(z) * sin(y) * sin(x) + (cos(x) * cos(z));
-	result(1, 2) = sin(y) * sin(z) * cos(x) - (cos(z) * sin(x));
-	result(2, 0) = -sin(y);
-	result(2, 1) = cos(y) * sin(x);
-	result(2, 2) = cos(y) * cos(x);
+	Eigen::Matrix <float, 3, 3> m;
 
-	result = FixMatrix0s(result);
+	m(0, 0) = cos(theta) * cos(phi);
+	m(1, 0) = cos(theta) * sin(phi);
+	m(2, 0) = -sin(theta);
 
-	return result;
+	m(0, 1) = cos(phi) * sin(theta) * sin(psi) - cos(psi) * sin(phi);
+	m(1, 1) = sin(phi) * sin(theta) * sin(psi) + cos(psi) * cos(phi);
+	m(2, 1) = cos(theta) * sin(psi);
+
+	m(0, 2) = cos(psi) * cos(phi) * sin(theta) + sin(phi) * sin(psi);
+	m(1, 2) = sin(theta) * sin(phi) * cos(psi) - cos(phi) * sin(psi);
+	m(2, 2) = cos(theta) * cos(psi);
+
+	m = FixMatrix0s(m);
+
+	return m;
 }
 
 Eigen::Vector3f Scene::EulerAnglesFromRotationMatrix(Eigen::Matrix3f m) {
 
 	Eigen::Vector <float, 3> angles;
-		float roll, pitch, yaw;
+		float yaw, pitch, roll;
 		pitch = asin(-m(2, 0));
 		if (abs(atan(m(2, 1) / m(2, 2))) < 1E-8 || abs(atan(m(1, 0) / m(0, 0))) < 1E-8) {
-			roll = acos(m(2, 2) / cos(pitch));
-			yaw = acos(m(0, 0) / cos(pitch));
+			yaw = acos(m(2, 2) / cos(pitch));
+			roll = acos(m(0, 0) / cos(pitch));
 		}
 		else {
-			roll = atan(m(2, 1) / m(2, 2));
-			yaw = atan(m(1, 0) / m(0, 0));
+			yaw = atan(m(2, 1) / m(2, 2));
+			roll = atan(m(1, 0) / m(0, 0));
 		}
-		angles << roll, pitch, yaw;
+		angles << yaw, pitch, roll;
 
 	return angles;
 }
 
-Eigen::Vector4f Scene::QuaternionFromEulerAngles(float roll, float pitch, float yaw) {
+Eigen::Vector4f Scene::QuaternionFromEulerAngles(float yaw, float pitch, float roll) {
 
 	Eigen::Vector<float, 4> q;
 	
-	q(0) = sin(roll / 2) * cos(pitch / 2) * cos(yaw / 2) - (cos(roll / 2) * sin(pitch / 2) * sin(yaw / 2));
-	q(1) = cos(roll / 2) * sin(pitch / 2) * cos(yaw / 2) + (sin(roll / 2) * cos(pitch / 2) * sin(yaw / 2));
-	q(2) = cos(roll / 2) * cos(pitch / 2) * sin(yaw / 2) - (sin(roll / 2) * sin(pitch / 2) * cos(yaw / 2));
-	q(3) = cos(roll / 2) * cos(pitch / 2) * cos(yaw / 2) + (sin(roll / 2) * sin(pitch / 2) * sin(yaw / 2));
+	q(0) = sin(yaw / 2) * cos(pitch / 2) * cos(roll / 2) - (cos(yaw / 2) * sin(pitch / 2) * sin(roll / 2));
+	q(1) = cos(yaw / 2) * sin(pitch / 2) * cos(roll / 2) + (sin(yaw / 2) * cos(pitch / 2) * sin(roll / 2));
+	q(2) = cos(yaw / 2) * cos(pitch / 2) * sin(roll / 2) - (sin(yaw / 2) * sin(pitch / 2) * cos(roll / 2));
+	q(3) = cos(yaw / 2) * cos(pitch / 2) * cos(roll / 2) + (sin(yaw / 2) * sin(pitch / 2) * sin(roll / 2));
 
 	return q;
 
