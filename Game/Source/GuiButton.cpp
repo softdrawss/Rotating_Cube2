@@ -48,7 +48,6 @@ bool GuiButton::Update(float dt)
 					std::stof(app->scene->q[1]->input);
 					std::stof(app->scene->q[2]->input);
 					std::stof(app->scene->q[3]->input);
-
 				}
 				if (button == GuiButtontype::PUSH_E) {
 					//Euler axis and angle values in std::string to float

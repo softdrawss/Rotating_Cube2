@@ -12,6 +12,8 @@
 #include "Defs.h"
 #include "Log.h"
 #include <string>
+#include "GuiButton.h"
+#include "SString.h"
 
 #define PI 3.141592654
 
@@ -88,6 +90,13 @@ bool Scene::Start()
 	currentAnim = &front;
 
 	Reset();
+
+	rqtn << 1, 0, 0, 0;
+	rmatrix << 1, 0, 0,
+			   0, 1, 0,
+			   0, 0, 1;
+	angleAndAxis << 0, 0, 0, 0;
+	rVector << 0, 0, 0;
 
 	return true;
 }
@@ -196,7 +205,14 @@ bool Scene::Update(float dt)
 		}
 	}
 
+	for (int i = 0; i < 4; i++) {
+		q[i]->input = std::to_string(qtn(i));
+	}
 
+
+	if (qtn(0) == 1) {
+
+	}
 
 	p1 -= center;
 	p1 = RotateQ(p1, qtn);
@@ -411,6 +427,22 @@ Eigen::Vector4f Scene::AngleAndAxisFromRotationMatrix(Eigen::Matrix3f r) {
 	result(3) = ux(1, 0);
 
 	return result;
+}
+
+Eigen::Vector4f Scene::AngleAndAxisFromQuaternion(Eigen::Vector4f q) {
+
+	Eigen::Vector<float, 4> zero = { 0, 0, 0, 0 };
+	if (q(0) == 1) {
+		return zero;
+	}
+
+	Eigen::Vector<float, 4> u;
+	u(0) = 2 * acos(q(0));
+	u(1) = q(1) / (sqrt(1 - (q(0) * q(0))));
+	u(2) = q(2) / (sqrt(1 - (q(0) * q(0))));
+	u(3) = q(3) / (sqrt(1 - (q(0) * q(0))));
+
+	return u;
 }
 
 Eigen::Vector3f Scene::QuaternionMultiplication(Eigen::Vector3f v, Eigen::Vector4f q) {

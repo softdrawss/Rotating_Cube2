@@ -60,6 +60,8 @@ public:
 
 	Eigen::Vector4f AngleAndAxisFromRotationMatrix(Eigen::Matrix3f r);
 
+	Eigen::Vector4f AngleAndAxisFromQuaternion(Eigen::Vector4f q);
+
 	Eigen::Vector4f QuaternionFromEulerAndAxis(float angle, Eigen::Vector3f u);
 
 	Eigen::Vector3f QuaternionMultiplication(Eigen::Vector3f v, Eigen::Vector4f q);
@@ -68,13 +70,15 @@ public:
 
 public:
 
+	Eigen::Vector4f qtn;
+
 	float roll;						//X Rotation
 	float pitch;					//Y Rotation
 	float yaw;						//Z Rotation
-	//Eigen::Matrix3f matrix;		//Rotation Matrix
-	Eigen::Vector4f qtn;			//Quaternion
-	//Eigen::Vector3f rVector;		//Rotation Vector
-	//Eigen::Vector4f angleAndAxis;	//Rotation Axis and Angle
+	Eigen::Matrix3f rmatrix;		//Rotation Matrix
+	Eigen::Vector4f rqtn;			//Rotation Quaternion
+	Eigen::Vector3f rVector;		//Rotation Vector
+	Eigen::Vector4f angleAndAxis;	//Rotation Axis and Angle
 
 	GuiButton* p[4]; 
 	GuiButton* button2;
