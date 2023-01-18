@@ -103,9 +103,12 @@ bool Scene::Update(float dt)
 {
 	//Camera rotation
 #pragma region CAMERA_ROTATION
+
 	roll = 0;
 	pitch = 0;
 	yaw = 0;
+
+	qtn << 1, 0, 0, 0;
 
 	center << p1(0) + p2(0) + p3(0) + p4(0) + p5(0) + p6(0) + p7(0) + p8(0),
 		p1(1) + p2(1) + p3(1) + p4(1) + p5(1) + p6(1) + p7(1) + p8(1),
@@ -115,66 +118,64 @@ bool Scene::Update(float dt)
 	center(1) = center(1) / 8;
 	center(2) = center(2) / 8;
 
-
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		roll = -0.02;
+		qtn(1) = -0.02;
+		qtn(0) = 0.9996;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		roll = 0.02;
+		qtn(1) = 0.02;
+		qtn(0) = 0.9996;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		pitch = 0.02;
+		qtn(2) = 0.02;
+		qtn(0) = 0.9996;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		roll = -0.02;
+		qtn(2) = -0.02;
+		qtn(0) = 0.9996;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-		yaw = 0.02;
+		qtn(3) = 0.02;
+		qtn(0) = 0.9996;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
-		roll = -0.02;
+		qtn(3) = -0.02;
+		qtn(0) = 0.9996;
 	}
 
+
+
 	p1 -= center;
-	p1 = Rotate(p1, roll, pitch, yaw);
+	p1 = RotateQ(p1, qtn);
 	p1 += center;
 
 	p2 -= center;
-	p2 = Rotate(p2, roll, pitch, yaw);
+	p2 = RotateQ(p2, qtn);
 	p2 += center;
 
 	p3 -= center;
-	p3 = Rotate(p3, roll, pitch, yaw);
+	p3 = RotateQ(p3, qtn);
 	p3 += center;
 
 	p4 -= center;
-	p4 = Rotate(p4, roll, pitch, yaw);
+	p4 = RotateQ(p4, qtn);
 	p4 += center;
 
 	p5 -= center;
-	p5 = Rotate(p5, roll, pitch, yaw);
+	p5 = RotateQ(p5, qtn);
 	p5 += center;
 
 	p6 -= center;
-	p6 = Rotate(p6, roll, pitch, yaw);
+	p6 = RotateQ(p6, qtn);
 	p6 += center;
 
 	p7 -= center;
-	p7 = Rotate(p7, roll, pitch, yaw);
+	p7 = RotateQ(p7, qtn);
 	p7 += center;
 
 	p8 -= center;
-	p8 = Rotate(p8, roll, pitch, yaw);
+	p8 = RotateQ(p8, qtn);
 	p8 += center;
-
-	//SDL_RenderDrawPoint(app->render->renderer, p1(0), p1(1));
-	//SDL_RenderDrawPoint(app->render->renderer, p2(0), p2(1));
-	//SDL_RenderDrawPoint(app->render->renderer, p3(0), p3(1));
-	//SDL_RenderDrawPoint(app->render->renderer, p4(0), p4(1));
-	//SDL_RenderDrawPoint(app->render->renderer, p5(0), p5(1));
-	//SDL_RenderDrawPoint(app->render->renderer, p6(0), p6(1));
-	//SDL_RenderDrawPoint(app->render->renderer, p7(0), p7(1));
-	//SDL_RenderDrawPoint(app->render->renderer, p8(0), p8(1));
 
 	app->render->DrawLine(p1(0), p1(1), p2(0), p2(1), 250, 250, 250, 250);
 	app->render->DrawLine(p1(0), p1(1), p4(0), p4(1), 0, 250, 0, 250);
@@ -291,7 +292,7 @@ Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z) 
 
 }
 
-Eigen::Matrix3d Scene::FixMatrix0s(Eigen::Matrix3d mat) {
+Eigen::Matrix3f Scene::FixMatrix0s(Eigen::Matrix3f mat) {
 	for (int i = 0; i < 9; i++) {
 		if (abs(mat(i)) < 0.00001) {
 			mat(i) = 0;
@@ -300,21 +301,21 @@ Eigen::Matrix3d Scene::FixMatrix0s(Eigen::Matrix3d mat) {
 	return mat;
 }
 
-Eigen::Vector3d Scene::RotationVectorFromAngleAndAxis(double angle, Eigen::Vector3d u) {
-	Eigen::Vector<double, 3> r;
+Eigen::Vector3f Scene::RotationVectorFromAngleAndAxis(float angle, Eigen::Vector3f u) {
+	Eigen::Vector<float, 3> r;
 	r << angle * u(0), angle* u(1), angle* u(2);
 	return r;
 }
 
-Eigen::Vector4d Scene::AngleAndAxisFromRotationVector(Eigen::Vector3d r) {
-	Eigen::Vector<double, 4> result;
+Eigen::Vector4f Scene::AngleAndAxisFromRotationVector(Eigen::Vector3f r) {
+	Eigen::Vector<float, 4> result;
 	result << r.norm(), r(0) / r.norm(), r(1) / r.norm(), r(2) / r.norm();
 	return result;
 }
 
-Eigen::Vector4d Scene::EulerAndAxisFromQuaternion(Eigen::Vector4d q) {
+Eigen::Vector4f Scene::EulerAndAxisFromQuaternion(Eigen::Vector4f q) {
 
-	Eigen::Vector<double, 4>result;
+	Eigen::Vector<float, 4>result;
 	result(0) = 2 * (acos(q(0)));
 	result(1) = q(1) / (sin(result(0) / 2));
 	result(2) = q(2) / (sin(result(0) / 2));
@@ -323,9 +324,9 @@ Eigen::Vector4d Scene::EulerAndAxisFromQuaternion(Eigen::Vector4d q) {
 	return result;
 }
 
-Eigen::Matrix3d Scene::CreateEulerAnglesRotation(double x, double y, double z) {
+Eigen::Matrix3f Scene::CreateEulerAnglesRotation(float x, float y, float z) {
 
-	Eigen::Matrix<double, 3, 3> result;
+	Eigen::Matrix<float, 3, 3> result;
 	result(0, 0) = cos(y) * cos(z);
 	result(0, 1) = cos(z) * sin(y) * sin(x) - (cos(x) * sin(z));
 	result(0, 2) = cos(x) * cos(z) * sin(y) + (sin(z) * sin(x));
@@ -341,30 +342,64 @@ Eigen::Matrix3d Scene::CreateEulerAnglesRotation(double x, double y, double z) {
 	return result;
 }
 
-Eigen::Vector4d Scene::QuaternionFromEulerAndAxis(double angle, Eigen::Vector3d u) {
+Eigen::Vector4f Scene::QuaternionFromEulerAngles(float roll, float pitch, float yaw) {
 
-	Eigen::Vector<double, 4> q;
+	Eigen::Vector<float, 4> q;
+	
+	q(0) = sin(roll / 2) * cos(pitch / 2) * cos(yaw / 2) - (cos(roll / 2) * sin(pitch / 2) * sin(yaw / 2));
+	q(1) = cos(roll / 2) * sin(pitch / 2) * cos(yaw / 2) + (sin(roll / 2) * cos(pitch / 2) * sin(yaw / 2));
+	q(2) = cos(roll / 2) * cos(pitch / 2) * sin(yaw / 2) - (sin(roll / 2) * sin(pitch / 2) * cos(yaw / 2));
+	q(3) = cos(roll / 2) * cos(pitch / 2) * cos(yaw / 2) + (sin(roll / 2) * sin(pitch / 2) * sin(yaw / 2));
+
+	return q;
+
+}
+
+Eigen::Vector4f Scene::QuaternionFromEulerAndAxis(float angle, Eigen::Vector3f u) {
+
+	Eigen::Vector<float, 4> q;
 	q << cos(angle / 2), u(0)* sin(angle / 2), u(1)* sin(angle / 2), u(2)* sin(angle / 2);
 
 	return q;
 }
 
-Eigen::Vector3d Scene::QuaternionMultiplication(Eigen::Vector3d v, Eigen::Vector4d q) {
+Eigen::Vector4f Scene::AngleAndAxisFromRotationMatrix(Eigen::Matrix3f r) {
 
-	Eigen::Matrix <double, 3, 3> identity;
+	Eigen::Vector<float, 4>result;
+	Eigen::Vector<float, 3>u;
+	Eigen::Matrix<float, 3, 3>ux;
+
+	result(0) = acos((r.trace() - 1) / 2);
+	ux = (r - r.transpose()) / (2 * sin(result(0)));
+
+	result(1) = ux(2, 1);
+	result(2) = ux(0, 2);
+	result(3) = ux(1, 0);
+
+	return result;
+}
+
+Eigen::Vector3f Scene::QuaternionMultiplication(Eigen::Vector3f v, Eigen::Vector4f q) {
+
+	Eigen::Matrix <float, 3, 3> identity;
 	identity << 1, 0, 0, 0, 1, 0, 0, 0, 1;
 
-	Eigen::Matrix <double, 3, 3> qx;
+	Eigen::Matrix <float, 3, 3> qx;
 	qx << 0, -q(3), q(2), q(3), 0, -q(1), -q(2), q(1), 0;
 
-	Eigen::Vector<double, 3>qv;
+	Eigen::Vector<float, 3>qv;
 	qv << q(1), q(2), q(3);
 
-	Eigen::Matrix<double, 3, 3>rotationQ;
+	Eigen::Matrix<float, 3, 3>rotationQ;
 	rotationQ = (q(0) * q(0) - qv.transpose() * qv) * identity + 2 * qv * qv.transpose() + 2 * q(0) * qx;
 
 	return rotationQ * v;
 
+}
+
+Eigen::Vector3f Scene::RotateQ(Eigen::Vector3f v, Eigen::Vector4f q) {
+	v = QuaternionMultiplication(v, q);
+	return v;
 }
 
 // Called before quitting
@@ -378,14 +413,14 @@ bool Scene::CleanUp()
 
 
 void Scene::Reset() {
-	p1 << 100, 100, 100;
-	p2 << 300, 100, 100;
-	p3 << 300, 300, 100;
-	p4 << 100, 300, 100;
-	p5 << 100, 100, 300;
-	p6 << 300, 100, 300;
-	p7 << 300, 300, 300;
-	p8 << 100, 300, 300;
+	p1 << 200, 200, 200;
+	p2 << 400, 200, 200;
+	p3 << 400, 400, 200;
+	p4 << 200, 400, 200;
+	p5 << 200, 200, 400;
+	p6 << 400, 200, 400;
+	p7 << 400, 400, 400;
+	p8 << 200, 400, 400;
 
 
 }
