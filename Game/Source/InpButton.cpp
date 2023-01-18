@@ -4,6 +4,7 @@
 #include "Audio.h"
 #include "Log.h"
 #include "SString.h"
+#include "Scene.h"
 
 InpButton::InpButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::INPUTBOX, id)
 {
@@ -47,6 +48,7 @@ bool InpButton::Update(float dt)
 			//
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP) {
 				state = GuiControlState::PRESSED;
+				app->scene->isButtonPressed = true;
 				SDL_StartTextInput();
 
 			}
@@ -104,6 +106,7 @@ bool InpButton::Update(float dt)
 				renderText = true;
 			}	if ((app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_UP)) {
 				state = GuiControlState::NORMAL;
+				app->scene->isButtonPressed = false;
 
 			}
 		}

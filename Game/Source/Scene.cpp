@@ -45,6 +45,8 @@ bool Scene::Start()
 	cubeTexture = app->tex->Load("Assets/cube.png");
 	UI = app->tex->Load("Assets/UI.png");
 
+	isButtonPressed = false;
+
 	// Buttons
 	// Reset
 	button2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "RESET", { 450,624,120,40 }, this);
@@ -113,149 +115,146 @@ bool Scene::Update(float dt)
 	//Camera rotation
 #pragma region CAMERA_ROTATION
 
-	roll = 0;
-	pitch = 0;
-	yaw = 0;
+	if (!isButtonPressed) {
 
-	qtn << 1, 0, 0, 0;
+		roll = 0;
+		pitch = 0;
+		yaw = 0;
 
-	center << p1(0) + p2(0) + p3(0) + p4(0) + p5(0) + p6(0) + p7(0) + p8(0),
-		p1(1) + p2(1) + p3(1) + p4(1) + p5(1) + p6(1) + p7(1) + p8(1),
-		p1(2) + p2(2) + p3(2) + p4(2) + p5(2) + p6(2) + p7(2) + p8(2);
+		qtn << 1, 0, 0, 0;
 
-	center(0) = center(0) / 8;
-	center(1) = center(1) / 8;
-	center(2) = center(2) / 8;
+		center << p1(0) + p2(0) + p3(0) + p4(0) + p5(0) + p6(0) + p7(0) + p8(0),
+			p1(1) + p2(1) + p3(1) + p4(1) + p5(1) + p6(1) + p7(1) + p8(1),
+			p1(2) + p2(2) + p3(2) + p4(2) + p5(2) + p6(2) + p7(2) + p8(2);
 
-	float aux = 0.99979997999;
-	float aux2 = 0.99959991996;
-	float aux3 = 0.99939981989;
+		center(0) = center(0) / 8;
+		center(1) = center(1) / 8;
+		center(2) = center(2) / 8;
 
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-		qtn(1) = -0.02;
-		qtn(0) = aux;
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
-			|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-			qtn(0) = aux2;
+		float aux = 0.99979997999;
+		float aux2 = 0.99959991996;
+		float aux3 = 0.99939981989;
+
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+			qtn(1) = -0.02;
+			qtn(0) = aux;
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
+				|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+				qtn(0) = aux2;
+			}
+			if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+				&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
+				qtn(0) = aux3;
+			}
+
 		}
-		if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
-			qtn(0) = aux3;
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			qtn(1) = 0.02;
+			qtn(0) = aux;
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
+				|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+				qtn(0) = aux2;
+			}
+			if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+				&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
+				qtn(0) = aux3;
+			}
 		}
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			qtn(2) = 0.02;
+			qtn(0) = aux;
+			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT
+				|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+				qtn(0) = aux2;
+			}
+			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+				&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
+				qtn(0) = aux3;
+			}
+		}
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			qtn(2) = -0.02;
+			qtn(0) = aux;
+			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT
+				|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+				qtn(0) = aux2;
+			}
+			if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+				&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
+				qtn(0) = aux3;
+			}
+		}
+		if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+			qtn(3) = 0.02;
+			qtn(0) = aux;
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
+				|| app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+				qtn(0) = aux2;
+			}
+			if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+				&& (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)) {
+				qtn(0) = aux3;
+			}
+		}
+		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
+			qtn(3) = -0.02;
+			qtn(0) = aux;
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
+				|| app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+				qtn(0) = aux2;
+			}
+			if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+				&& (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)) {
+				qtn(0) = aux3;
+			}
+		}
+
+		Eigen::Vector<float, 3>dircopia = director.normalized();
+
+		angleAndAxis(0) = dircopia(0);
+		angleAndAxis(1) = dircopia(1);
+		angleAndAxis(2) = dircopia(2);
+		angleAndAxis(3) = Angle2Vectors(director, directorref);
+
+		for (int i = 0; i < 4; i++) {
+			e[i]->input = std::to_string(angleAndAxis(i));
+		}
+
+		p1 -= center;
+		p1 = RotateQ(p1, qtn);
+		p1 += center;
+
+		p2 -= center;
+		p2 = RotateQ(p2, qtn);
+		p2 += center;
+
+		p3 -= center;
+		p3 = RotateQ(p3, qtn);
+		p3 += center;
+
+		p4 -= center;
+		p4 = RotateQ(p4, qtn);
+		p4 += center;
+
+		p5 -= center;
+		p5 = RotateQ(p5, qtn);
+		p5 += center;
+
+		p6 -= center;
+		p6 = RotateQ(p6, qtn);
+		p6 += center;
+
+		p7 -= center;
+		p7 = RotateQ(p7, qtn);
+		p7 += center;
+
+		p8 -= center;
+		p8 = RotateQ(p8, qtn);
+		p8 += center;
+
+		director = RotateQ(director, qtn);
 
 	}
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		qtn(1) = 0.02;
-		qtn(0) = aux;
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
-			|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-			qtn(0) = aux2;
-		}
-		if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
-			qtn(0) = aux3;
-		}
-	}
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		qtn(2) = 0.02;
-		qtn(0) = aux;
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT
-			|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-			qtn(0) = aux2;
-		}
-		if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-			&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
-			qtn(0) = aux3;
-		}
-	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		qtn(2) = -0.02;
-		qtn(0) = aux;
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT
-			|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-			qtn(0) = aux2;
-		}
-		if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-			&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
-			qtn(0) = aux3;
-		}
-	}
-	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-		qtn(3) = 0.02;
-		qtn(0) = aux;
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
-			|| app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			qtn(0) = aux2;
-		}
-		if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			&& (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)) {
-			qtn(0) = aux3;
-		}
-	}
-	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
-		qtn(3) = -0.02;
-		qtn(0) = aux;
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
-			|| app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-			qtn(0) = aux2;
-		}
-		if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			&& (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)) {
-			qtn(0) = aux3;
-		}
-	}
-
-	for (int i = 1; i < 4; i++) {
-		auxq(i) += qtn(i);
-		if(auxq(i) >= 1){
-			auxq(i) = -auxq(i) + (1 - auxq(i));
-		}
-	}
-
-	rqtn = auxq;
-	rqtn.normalize();
-
-	for (int i = 0; i < 4; i++) {
-		q[i]->input = std::to_string(rqtn(i));
-	}
-
-	angleAndAxis = AngleAndAxisFromQuaternion(rqtn);
-
-	for (int i = 0; i < 4; i++) {
-		e[i]->input = std::to_string(angleAndAxis(i));
-	}
-
-	p1 -= center;
-	p1 = RotateQ(p1, qtn);
-	p1 += center;
-
-	p2 -= center;
-	p2 = RotateQ(p2, qtn);
-	p2 += center;
-
-	p3 -= center;
-	p3 = RotateQ(p3, qtn);
-	p3 += center;
-
-	p4 -= center;
-	p4 = RotateQ(p4, qtn);
-	p4 += center;
-
-	p5 -= center;
-	p5 = RotateQ(p5, qtn);
-	p5 += center;
-
-	p6 -= center;
-	p6 = RotateQ(p6, qtn);
-	p6 += center;
-
-	p7 -= center;
-	p7 = RotateQ(p7, qtn);
-	p7 += center;
-
-	p8 -= center;
-	p8 = RotateQ(p8, qtn);
-	p8 += center;
 
 	app->render->DrawLine(p1(0), p1(1), p2(0), p2(1), 250, 250, 250, 250);
 	app->render->DrawLine(p1(0), p1(1), p4(0), p4(1), 0, 250, 0, 250);
@@ -269,6 +268,7 @@ bool Scene::Update(float dt)
 	app->render->DrawLine(p5(0), p5(1), p8(0), p8(1), 250, 250, 250, 250);
 	app->render->DrawLine(p6(0), p6(1), p7(0), p7(1), 250, 250, 250, 250);
 	app->render->DrawLine(p7(0), p7(1), p8(0), p8(1), 250, 250, 250, 250);
+
 #pragma	endregion CAMERA_ROTATION
 	
 #pragma region UI
@@ -281,6 +281,8 @@ bool Scene::Update(float dt)
 
 	//Draw coordenades of each point
 	std::string string;
+	string = "ct = " + std::to_string(director(0)) + ", " + std::to_string(director(1)) + ", " + std::to_string(director(2));
+	app->render->DrawText(string.c_str(), 50, 305 + 180, 390, 20, { 204, 204, 204 });
 	string = "p1 = " + std::to_string(p1(0)) + ", " + std::to_string(p1(1)) + ", " + std::to_string(p1(2));
 	app->render->DrawText(string.c_str(), 50, 305 + 200, 390, 20, { 204, 204, 204 });
 	string = "p2 = " + std::to_string(p2(0)) + ", " + std::to_string(p2(1)) + ", " + std::to_string(p2(2));
@@ -474,6 +476,10 @@ Eigen::Vector3f Scene::QuaternionMultiplication(Eigen::Vector3f v, Eigen::Vector
 
 }
 
+float Scene::Angle2Vectors(Eigen::Vector3f u, Eigen::Vector3f v) {
+	return acos((u(0) * (v(0)) + u(1) * (v(1)) + u(2) * (v(2))) / (u.norm() * v.norm()));
+}
+
 Eigen::Vector3f Scene::RotateQ(Eigen::Vector3f v, Eigen::Vector4f q) {
 	v = QuaternionMultiplication(v, q);
 	return v;
@@ -500,5 +506,8 @@ void Scene::Reset() {
 	p8 << 200, 400, 400;
 
 	rqtn << 1, 0, 0, 0;
-	auxq << 1, 0, 0, 0;
+
+	director << 0, 0, 1;
+	directorref << 0, 0, 1;
+	
 }

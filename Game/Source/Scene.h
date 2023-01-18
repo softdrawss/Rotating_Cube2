@@ -66,12 +66,15 @@ public:
 
 	Eigen::Vector3f QuaternionMultiplication(Eigen::Vector3f v, Eigen::Vector4f q);
 
+	float Angle2Vectors(Eigen::Vector3f u, Eigen::Vector3f v);
+
 	Eigen::Vector3f RotateQ(Eigen::Vector3f v, Eigen::Vector4f q);
 
 public:
 
 	Eigen::Vector4f qtn;
-	Eigen::Vector4f auxq;
+	Eigen::Vector3f director;
+	Eigen::Vector3f directorref;
 
 	float roll;						//X Rotation
 	float pitch;					//Y Rotation
@@ -88,6 +91,8 @@ public:
 	InpButton* e[4];
 	InpButton* a[3];
 	InpButton* v[3];
+
+	bool isButtonPressed;
 
 private:
 	SDL_Texture* img;
