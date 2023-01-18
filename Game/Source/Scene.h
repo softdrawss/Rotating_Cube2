@@ -46,13 +46,15 @@ public:
 	
 	void Reset();
 
+	void ControlRotation();
+
 	Eigen::Matrix3f FixMatrix0s(Eigen::Matrix3f mat);
 
 	bool CompareFMatrices(Eigen::MatrixXf m1, Eigen::MatrixXf m2);
 
 	Eigen::Matrix3f CreateRotationMatrix(Eigen::Vector4f e);
 
-	Eigen::Vector3f RotationVectorFromAngleAndAxis(float angle, Eigen::Vector3f u);
+	Eigen::Vector3f RotationVectorFromAngleAndAxis(Eigen::Vector4f e);
 
 	Eigen::Vector4f AngleAndAxisFromRotationVector(Eigen::Vector3f r);
 
@@ -68,13 +70,15 @@ public:
 
 	Eigen::Vector4f AngleAndAxisFromQuaternion(Eigen::Vector4f q);
 
-	Eigen::Vector4f QuaternionFromEulerAndAxis(float angle, Eigen::Vector3f u);
+	Eigen::Vector4f QuaternionFromEulerAndAxis(Eigen::Vector4f e);
 
 	Eigen::Vector3f QuaternionMultiplication(Eigen::Vector3f v, Eigen::Vector4f q);
 
 	float Angle2Vectors(Eigen::Vector3f u, Eigen::Vector3f v);
 
 	Eigen::Vector3f RotateQ(Eigen::Vector3f v, Eigen::Vector4f q);
+
+	void ChangePositionPoints(Eigen::Vector4f q);
 
 public:
 
