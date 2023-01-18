@@ -118,29 +118,82 @@ bool Scene::Update(float dt)
 	center(1) = center(1) / 8;
 	center(2) = center(2) / 8;
 
+	float aux = 0.99979997999;
+	float aux2 = 0.99959991996;
+	float aux3 = 0.99939981989;
+
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 		qtn(1) = -0.02;
-		qtn(0) = 0.9996;
+		qtn(0) = aux;
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
+			|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+			qtn(0) = aux2;
+		}
+		if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
+			qtn(0) = aux3;
+		}
+
 	}
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 		qtn(1) = 0.02;
-		qtn(0) = 0.9996;
+		qtn(0) = aux;
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
+			|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+			qtn(0) = aux2;
+		}
+		if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
+			qtn(0) = aux3;
+		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		qtn(2) = 0.02;
-		qtn(0) = 0.9996;
+		qtn(0) = aux;
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT
+			|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+			qtn(0) = aux2;
+		}
+		if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
+			qtn(0) = aux3;
+		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		qtn(2) = -0.02;
-		qtn(0) = 0.9996;
+		qtn(0) = aux;
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT
+			|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+			qtn(0) = aux2;
+		}
+		if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
+			qtn(0) = aux3;
+		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
 		qtn(3) = 0.02;
-		qtn(0) = 0.9996;
+		qtn(0) = aux;
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
+			|| app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			qtn(0) = aux2;
+		}
+		if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			&& (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)) {
+			qtn(0) = aux3;
+		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
 		qtn(3) = -0.02;
-		qtn(0) = 0.9996;
+		qtn(0) = aux;
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
+			|| app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			qtn(0) = aux2;
+		}
+		if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			&& (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)) {
+			qtn(0) = aux3;
+		}
 	}
 
 

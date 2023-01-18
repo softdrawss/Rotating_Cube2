@@ -70,9 +70,6 @@ public:
 
 public:
 
-	//L02: DONE 3: Declare a Player attribute 
-	//Player* player;
-
 	float roll;						//X Rotation
 	float pitch;					//Y Rotation
 	float yaw;						//Z Rotation
