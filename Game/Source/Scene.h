@@ -45,8 +45,6 @@ public:
 	bool OnGuiMouseClickEvent(GuiControl* control);
 	
 	void Reset();
-	
-	Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z);
 
 	Eigen::Matrix3f FixMatrix0s(Eigen::Matrix3f mat);
 

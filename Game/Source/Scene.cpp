@@ -326,25 +326,6 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 
 }
 
-Eigen::Vector3f Scene::Rotate(Eigen::Vector3f point, float x, float y, float z) {
-	float rad = 0;
-
-	rad = x;
-	point(1) = cos(rad) * point(1) - sin(rad) * point(2);
-	point(2) = sin(rad) * point(1) + cos(rad) * point(2);
-
-	rad = y;
-	point(0) = cos(rad) * point(0) + sin(rad) * point(2);
-	point(2) = -sin(rad) * point(0) + cos(rad) * point(2);
-
-	rad = z;
-	point(0) = cos(rad) * point(0) - sin(rad) * point(1);
-	point(1) = sin(rad) * point(0) + cos(rad) * point(1);
-
-	return point;
-
-}
-
 Eigen::Matrix3f Scene::FixMatrix0s(Eigen::Matrix3f mat) {
 	for (int i = 0; i < 9; i++) {
 		if (abs(mat(i)) < 0.00001) {
