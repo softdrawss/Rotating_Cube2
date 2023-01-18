@@ -69,10 +69,10 @@ bool Scene::Start()
 	q[2] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 923 ,100,90,30 }, this);
 	q[3] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 1031 ,100,90,30 }, this);
 
-	e[0] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 743 ,223,90,30 }, this);
-	e[1] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 851,223,90,30 }, this);
-	e[2] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 959,223,90,30 }, this);
-	e[3] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 980 ,180,90,30 }, this);
+	e[0] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 980 ,180,90,30 }, this);
+	e[1] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 743 ,223,90,30 }, this);
+	e[2] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 851,223,90,30 }, this);
+	e[3] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 959,223,90,30 }, this);
 
 	a[0] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 670 ,350,90,30 }, this);
 	a[1] = (InpButton*)app->guiManager->CreateGuiControl(GuiControlType::INPUTBOX, 2, " ", { 812 ,350,90,30 }, this);
@@ -92,13 +92,6 @@ bool Scene::Start()
 	currentAnim = &front;
 
 	Reset();
-
-	rqtn << 1, 0, 0, 0;
-	rmatrix << 1, 0, 0,
-			   0, 1, 0,
-			   0, 0, 1;
-	angleAndAxis << 0, 0, 0, 0;
-	rVector << 0, 0, 0;
 
 	return true;
 }
@@ -214,10 +207,10 @@ bool Scene::Update(float dt)
 		angleAndAxis(3) = Angle2Vectors(director, directorref);
 
 		//Calculating everything else with the axis and angle
-		rmatrix = CreateRotationMatrix(angleAndAxis(3), { angleAndAxis(0), angleAndAxis(1), angleAndAxis(2) });
-		rVector = RotationVectorFromAngleAndAxis(angleAndAxis(3), { angleAndAxis(0), angleAndAxis(1), angleAndAxis(2) });
-		rqtn = QuaternionFromEulerAndAxis(angleAndAxis(3), { angleAndAxis(0), angleAndAxis(1), angleAndAxis(2) });
-		eangles = EulerAnglesFromRotationMatrix(rmatrix);
+		//rmatrix = CreateRotationMatrix(angleAndAxis(3), { angleAndAxis(0), angleAndAxis(1), angleAndAxis(2) });
+		//rVector = RotationVectorFromAngleAndAxis(angleAndAxis(3), { angleAndAxis(0), angleAndAxis(1), angleAndAxis(2) });
+		//rqtn = QuaternionFromEulerAndAxis(angleAndAxis(3), { angleAndAxis(0), angleAndAxis(1), angleAndAxis(2) });
+		//eangles = EulerAnglesFromRotationMatrix(rmatrix);
 
 		//Angle and Axis print
 		for (int i = 0; i < 4; i++) {
@@ -226,17 +219,17 @@ bool Scene::Update(float dt)
 
 		//Rotation Vector print
 		for (int i = 0; i < 3; i++) {
-			v[i]->input = std::to_string(rVector(i));
+			//v[i]->input = std::to_string(rVector(i));
 		}
 
 		//Quaternion print
 		for (int i = 0; i < 4; i++) {
-			q[i]->input = std::to_string(rqtn(i));
+			//q[i]->input = std::to_string(rqtn(i));
 		}
 
 		//Euler angles print
 		for (int i = 0; i < 3; i++) {
-			a[i]->input = std::to_string(eangles(i));
+			//a[i]->input = std::to_string(eangles(i));
 		}
 
 		p1 -= center;
@@ -395,7 +388,10 @@ bool Scene::CompareFMatrices(Eigen::MatrixXf m1, Eigen::MatrixXf m2) {
 	return true;
 }
 
-Eigen::Matrix3f Scene::CreateRotationMatrix(float angle, Eigen::Vector3f u) {
+Eigen::Matrix3f Scene::CreateRotationMatrix(Eigen::Vector4f e) {
+
+	float angle = e(0);
+	Eigen::Vector3f u(e(1), e(2), e(3));
 
 	Eigen::Matrix <float, 3, 3> identity;
 	identity << 1, 0, 0, 0, 1, 0, 0, 0, 1;
@@ -571,6 +567,11 @@ void Scene::Reset() {
 	p8 << 200, 400, 400;
 
 	rqtn << 1, 0, 0, 0;
+	rmatrix << 1, 0, 0,
+		0, 1, 0,
+		0, 0, 1;
+	angleAndAxis << 0, 0, 0, 0;
+	rVector << 0, 0, 0;
 
 	director << 0, 0, 1;
 	directorref << 0, 0, 1;

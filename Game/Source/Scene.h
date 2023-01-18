@@ -50,7 +50,7 @@ public:
 
 	bool CompareFMatrices(Eigen::MatrixXf m1, Eigen::MatrixXf m2);
 
-	Eigen::Matrix3f CreateRotationMatrix(float angle, Eigen::Vector3f u);
+	Eigen::Matrix3f CreateRotationMatrix(Eigen::Vector4f e);
 
 	Eigen::Vector3f RotationVectorFromAngleAndAxis(float angle, Eigen::Vector3f u);
 

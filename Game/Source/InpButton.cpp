@@ -107,6 +107,10 @@ bool InpButton::Update(float dt)
 				std::string n = ".";
 				input += n;
 				renderText = true;
+			}if ((app->input->GetKey(SDL_SCANCODE_MINUS) == KEY_UP)) {
+				std::string n = "-";
+				input += n;
+				renderText = true;
 			}	if ((app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_UP)) {
 				state = GuiControlState::NORMAL;
 				app->scene->isButtonPressed = false;
