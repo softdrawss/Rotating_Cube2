@@ -409,10 +409,6 @@ Eigen::Vector3f Scene::RotateQ(Eigen::Vector3f v, Eigen::Vector4f q) {
 	return v;
 }
 
-Eigen::Vector3f Scene::RotationAxisFrom2Vecs(Eigen::Vector3f u, Eigen::Vector3f v) {
-
-}
-
 Eigen::Vector3f Scene::VecProduct(Eigen::Vector3f v1, Eigen::Vector3f v2) {
 	Eigen::Vector<float, 3> n;
 	n << (v1(1) * v2(2)) - (v1(2) * v2(1)), -(v1(0) * v2(2)) - (v1(2) * v2(0)), (v1(0) * v2(1)) - (v1(1) * v2(0));

@@ -78,8 +78,6 @@ public:
 
 	Eigen::Vector3f RotateQ(Eigen::Vector3f v, Eigen::Vector4f q);
 
-	Eigen::Vector3f RotationAxisFrom2Vecs(Eigen::Vector3f u, Eigen::Vector3f v);
-
 	Eigen::Vector3f VecProduct(Eigen::Vector3f u, Eigen::Vector3f v);
 
 	void ComputationAndPrintingOfAllRotations();
