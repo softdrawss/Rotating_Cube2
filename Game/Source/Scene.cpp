@@ -409,6 +409,16 @@ Eigen::Vector3f Scene::RotateQ(Eigen::Vector3f v, Eigen::Vector4f q) {
 	return v;
 }
 
+Eigen::Vector3f Scene::RotationAxisFrom2Vecs(Eigen::Vector3f u, Eigen::Vector3f v) {
+
+}
+
+Eigen::Vector3f Scene::VecProduct(Eigen::Vector3f v1, Eigen::Vector3f v2) {
+	Eigen::Vector<float, 3> n;
+	n << (v1(1) * v2(2)) - (v1(2) * v2(1)), -(v1(0) * v2(2)) - (v1(2) * v2(0)), (v1(0) * v2(1)) - (v1(1) * v2(0));
+	return n;
+}
+
 // Called before quitting
 bool Scene::CleanUp()
 {
@@ -435,9 +445,20 @@ void Scene::Reset() {
 		0, 0, 1;
 	angleAndAxis << 0, 0, 0, 0;
 	rVector << 0, 0, 0;
-
 	director << 0, 0, 1;
-	directorref << 0, 0, 1;
+
+	directorx << 1, 0, 0;
+	directory << 0, 1, 0;
+	directorz << 0, 0, 1;
+
+	directorxy << 1, 1, 0;
+	directorxy.normalize();
+	directorxz << 1, 0, 1;
+	directorxz.normalize();
+	directoryz << 0, 1, 1;
+	directoryz.normalize();
+	directorxyz << 1, 1, 1;
+	directorxyz.normalize();
 
 	ComputationAndPrintingOfAllRotations();
 	
@@ -451,74 +472,152 @@ void Scene::ControlRotation() {
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
 		qtn(1) = -0.02;
 		qtn(0) = aux;
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
-			|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+		directorref << 0, 1, 0;
+		director = directory;
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			qtn(0) = aux2;
+			directorref << 1, 1, 0;
+			directorref.normalize();
+			director = directorxy;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+			qtn(0) = aux2;
+			directorref << 0, 1, 1;
+			directorref.normalize();
+			director = directoryz;
 		}
 		if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
 			qtn(0) = aux3;
+			directorref << 1, 1, 1;
+			directorref.normalize();
+			director = directorxyz;
 		}
 
 	}
 	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 		qtn(1) = 0.02;
 		qtn(0) = aux;
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
-			|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+		directorref << 0, 1, 0;
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			qtn(0) = aux2;
+			directorref << 1, 1, 0;
+			directorref.normalize();
+			director = directorxy;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+			qtn(0) = aux2;
+			directorref << 0, 1, 1;
+			directorref.normalize();
+			director = directoryz;
 		}
 		if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
 			qtn(0) = aux3;
+			directorref << 1, 1, 1;
+			directorref.normalize();
+			director = directorxyz;
 		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		qtn(2) = 0.02;
 		qtn(0) = aux;
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT
-			|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+		directorref << 1, 0, 0;
+		director = directory;
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 			qtn(0) = aux2;
+			directorref << 1, 1, 0;
+			directorref.normalize();
+			director = directorxy;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+			qtn(0) = aux2;
+			directorref << 1, 0, 1;
+			directorref.normalize();
+			director = directorxz;
 		}
 		if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 			&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
 			qtn(0) = aux3;
+			directorref << 1, 1, 1;
+			directorref.normalize();
+			director = directorxyz;
 		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		qtn(2) = -0.02;
 		qtn(0) = aux;
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT
-			|| app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+		directorref << 1, 0, 0;
+		director = directory;
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 			qtn(0) = aux2;
+			directorref << 1, 1, 0;
+			directorref.normalize();
+			director = directorxy;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+			qtn(0) = aux2;
+			directorref << 1, 0, 1;
+			directorref.normalize();
+			director = directorxz;
 		}
 		if ((app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 			&& (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)) {
 			qtn(0) = aux3;
+			directorref << 1, 1, 1;
+			directorref.normalize();
+			director = directorxyz;
 		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
 		qtn(3) = 0.02;
 		qtn(0) = aux;
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
-			|| app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+		directorref << 0, 0, 1;
+		director = directorz;
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			qtn(0) = aux2;
+			directorref << 1, 0, 1;
+			directorref.normalize();
+			director = directorxz;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			qtn(0) = aux2;
+			directorref << 0, 1, 1;
+			directorref.normalize();
+			director = directoryz;
 		}
 		if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			&& (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)) {
 			qtn(0) = aux3;
+			directorref << 1, 1, 1;
+			directorref.normalize();
+			director = directorxyz;
 		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) {
 		qtn(3) = -0.02;
 		qtn(0) = aux;
-		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
-			|| app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+		directorref << 0, 0, 1;
+		directorref.normalize();
+		director = directorz;
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			qtn(0) = aux2;
+			directorref << 1, 0, 1;
+			directorref.normalize();
+			director = directorxz;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			qtn(0) = aux2;
+			directorref << 0, 1, 1;
+			directorref.normalize();
+			director = directoryz;
 		}
 		if ((app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 			&& (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)) {
 			qtn(0) = aux3;
+			directorref << 1, 1, 1;
+			directorref.normalize();
+			director = directorxyz;
 		}
 	}
 
@@ -529,11 +628,13 @@ void Scene::ControlRotation() {
 
 void Scene::ComputationAndPrintingOfAllRotations() {
 	//Calculating Axis and Angle
-	Eigen::Vector<float, 3>dircopia = director.normalized();
+	Eigen::Vector<float, 3>axis;
 
-	angleAndAxis(1) = dircopia(0);
-	angleAndAxis(2) = dircopia(1);
-	angleAndAxis(3) = dircopia(2);
+	axis = VecProduct(director, directorref);
+	axis.normalize();
+	angleAndAxis(1) = axis(0);
+	angleAndAxis(2) = axis(1);
+	angleAndAxis(3) = axis(2);
 	angleAndAxis(0) = Angle2Vectors(director, directorref);
 
 	//Calculating everything else with the axis and angle
@@ -564,6 +665,7 @@ void Scene::ComputationAndPrintingOfAllRotations() {
 }
 
 void Scene::ChangePositionPoints(Eigen::Vector4f qtn) {
+
 	p1 -= center;
 	p1 = RotateQ(p1, qtn);
 	p1 += center;
@@ -596,5 +698,11 @@ void Scene::ChangePositionPoints(Eigen::Vector4f qtn) {
 	p8 = RotateQ(p8, qtn);
 	p8 += center;
 
-	director = RotateQ(director, qtn);
+	directorx = RotateQ(directorx, qtn);
+	directory = RotateQ(directory, qtn);
+	directorz = RotateQ(directorz, qtn);
+	directorxy = RotateQ(directorxy, qtn);
+	directorxz = RotateQ(directorxz, qtn);
+	directoryz = RotateQ(directoryz, qtn);
+	directorxyz = RotateQ(directorxyz, qtn);
 }

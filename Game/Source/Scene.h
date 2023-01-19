@@ -78,7 +78,11 @@ public:
 
 	Eigen::Vector3f RotateQ(Eigen::Vector3f v, Eigen::Vector4f q);
 
-	void Scene::ComputationAndPrintingOfAllRotations();
+	Eigen::Vector3f RotationAxisFrom2Vecs(Eigen::Vector3f u, Eigen::Vector3f v);
+
+	Eigen::Vector3f VecProduct(Eigen::Vector3f u, Eigen::Vector3f v);
+
+	void ComputationAndPrintingOfAllRotations();
 
 	void ChangePositionPoints(Eigen::Vector4f q);
 
@@ -86,6 +90,13 @@ public:
 
 	Eigen::Vector4f qtn;
 	Eigen::Vector3f director;
+	Eigen::Vector3f directorx;
+	Eigen::Vector3f directory;
+	Eigen::Vector3f directorz;
+	Eigen::Vector3f directorxy;
+	Eigen::Vector3f directorxz;
+	Eigen::Vector3f directoryz;
+	Eigen::Vector3f directorxyz;
 	Eigen::Vector3f directorref;
 
 	Eigen::Vector3f eangles;		//XYZ Rotation
