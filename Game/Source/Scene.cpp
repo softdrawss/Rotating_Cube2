@@ -522,7 +522,7 @@ void Scene::ControlRotation() {
 		}
 	}
 
-	ComputationAndPrintingOfAllRotations();
+	//ComputationAndPrintingOfAllRotations();
 
 	ChangePositionPoints(qtn);
 }
