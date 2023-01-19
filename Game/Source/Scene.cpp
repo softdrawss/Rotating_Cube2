@@ -438,6 +438,8 @@ void Scene::Reset() {
 
 	director << 0, 0, 1;
 	directorref << 0, 0, 1;
+
+	ComputationAndPrintingOfAllRotations();
 	
 }
 
