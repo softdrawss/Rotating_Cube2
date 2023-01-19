@@ -528,12 +528,14 @@ void Scene::ControlRotation() {
 }
 
 void Scene::ComputationAndPrintingOfAllRotations() {
-	//Calculating Axis and Angle
-	Eigen::Vector<float, 3>dircopia = director.normalized();
 
-	angleAndAxis(1) = dircopia(0);
-	angleAndAxis(2) = dircopia(1);
-	angleAndAxis(3) = dircopia(2);
+	//Calculating Axis and Angle
+	Eigen::Vector<float, 3>perp;
+	perp = directorref.cross(director);
+	perp.normalize();
+	angleAndAxis(1) = perp(0);
+	angleAndAxis(2) = perp(1);
+	angleAndAxis(3) = perp(2);
 	angleAndAxis(0) = Angle2Vectors(director, directorref);
 
 	//Calculating everything else with the axis and angle
