@@ -72,7 +72,7 @@ bool GuiButton::Update(float dt)
 					Eigen::Vector3f v(std::stof(app->scene->v[0]->input), std::stof(app->scene->v[1]->input), std::stof(app->scene->v[2]->input));
 					app->scene->rmatrix = app->scene->CreateRotationMatrix(app->scene->AngleAndAxisFromRotationVector(v));
 					
-					app->scene->ChangePositionPoints(app->scene->QuaternionFromEulerAndAxis(app->scene->AngleAndAxisFromRotationVector(v)).normalized());
+					app->scene->ChangePositionPoints(app->scene->QuaternionFromEulerAndAxis(app->scene->AngleAndAxisFromRotationVector(v)));
 					app->scene->ComputationAndPrintingOfAllRotations();
 				}
 				if (button == GuiButtontype::RESET) {
