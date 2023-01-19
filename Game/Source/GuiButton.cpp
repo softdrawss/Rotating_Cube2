@@ -51,9 +51,19 @@ bool GuiButton::Update(float dt)
 					app->scene->rmatrix = app->scene->CreateRotationMatrix(app->scene->AngleAndAxisFromQuaternion(q.normalized()));
 					Eigen::Vector4f rot(q.normalized());
 
-					app->scene->Reset();
+					app->scene->p1 << 200, 200, 200;
+					app->scene->p2 << 400, 200, 200;
+					app->scene->p3 << 400, 400, 200;
+					app->scene->p4 << 200, 400, 200;
+					app->scene->p5 << 200, 200, 400;
+					app->scene->p6 << 400, 200, 400;
+					app->scene->p7 << 400, 400, 400;
+					app->scene->p8 << 200, 400, 400;
+					//
+
+					app->scene->ComputationAndPrintingOfAllRotations();					
 					app->scene->ChangePositionPoints(rot);
-					app->scene->ComputationAndPrintingOfAllRotations();
+					//app->scene->Reset();
 				}
 				if (button == GuiButtontype::PUSH_E) {
 					//Euler axis and angle values in std::string to float
@@ -62,9 +72,19 @@ bool GuiButton::Update(float dt)
 					app->scene->rmatrix = app->scene->CreateRotationMatrix(e);
 
 					Eigen::Vector4f rot(app->scene->QuaternionFromEulerAndAxis(e).normalized());
-					app->scene->Reset();
+					//
+					app->scene->p1 << 200, 200, 200;
+					app->scene->p2 << 400, 200, 200;
+					app->scene->p3 << 400, 400, 200;
+					app->scene->p4 << 200, 400, 200;
+					app->scene->p5 << 200, 200, 400;
+					app->scene->p6 << 400, 200, 400;
+					app->scene->p7 << 400, 400, 400;
+					app->scene->p8 << 200, 400, 400;
+
+					app->scene->ComputationAndPrintingOfAllRotations();					
 					app->scene->ChangePositionPoints(rot);
-					app->scene->ComputationAndPrintingOfAllRotations();
+					//app->scene->Reset();
 				}
 				if (button == GuiButtontype::PUSH_A) {
 					//Euler angles values in std::string to float
@@ -72,9 +92,19 @@ bool GuiButton::Update(float dt)
 					app->scene->rmatrix = app->scene->CreateEulerAnglesRotation(std::stof(app->scene->a[0]->input), std::stof(app->scene->a[1]->input), std::stof(app->scene->a[2]->input));
 
 					Eigen::Vector4f rot(app->scene->QuaternionFromEulerAngles(std::stof(app->scene->a[0]->input), std::stof(app->scene->a[1]->input), std::stof(app->scene->a[2]->input)).normalized().normalized());
-					app->scene->Reset();
+					app->scene->p1 << 200, 200, 200;
+					app->scene->p2 << 400, 200, 200;
+					app->scene->p3 << 400, 400, 200;
+					app->scene->p4 << 200, 400, 200;
+					app->scene->p5 << 200, 200, 400;
+					app->scene->p6 << 400, 200, 400;
+					app->scene->p7 << 400, 400, 400;
+					app->scene->p8 << 200, 400, 400;
+					//
+			
+					app->scene->ComputationAndPrintingOfAllRotations();		
 					app->scene->ChangePositionPoints(rot);
-					app->scene->ComputationAndPrintingOfAllRotations();
+					//app->scene->Reset();
 				}
 				if (button == GuiButtontype::PUSH_V) {
 					//Rotation vector in std::string to float
@@ -83,9 +113,19 @@ bool GuiButton::Update(float dt)
 					app->scene->rmatrix = app->scene->CreateRotationMatrix(app->scene->AngleAndAxisFromRotationVector(v));
 
 					Eigen::Vector4f rot(app->scene->QuaternionFromEulerAndAxis(app->scene->AngleAndAxisFromRotationVector(v)));
-					app->scene->Reset();
+					app->scene->p1 << 200, 200, 200;
+					app->scene->p2 << 400, 200, 200;
+					app->scene->p3 << 400, 400, 200;
+					app->scene->p4 << 200, 400, 200;
+					app->scene->p5 << 200, 200, 400;
+					app->scene->p6 << 400, 200, 400;
+					app->scene->p7 << 400, 400, 400;
+					app->scene->p8 << 200, 400, 400;
+					//
+
+					app->scene->ComputationAndPrintingOfAllRotations();					
 					app->scene->ChangePositionPoints(rot);
-					app->scene->ComputationAndPrintingOfAllRotations();
+					//app->scene->Reset();
 				}
 				if (button == GuiButtontype::RESET) {
 					app->scene->Reset();
