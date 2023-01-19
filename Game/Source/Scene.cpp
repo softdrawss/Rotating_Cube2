@@ -152,24 +152,24 @@ bool Scene::Update(float dt)
 
 	//Draw coordenades of each point
 	std::string string;
-	string = "ct = " + std::to_string(director(0)) + ", " + std::to_string(director(1)) + ", " + std::to_string(director(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 180, 390, 20, { 204, 204, 204 });
-	string = "p1 = " + std::to_string(p1(0)) + ", " + std::to_string(p1(1)) + ", " + std::to_string(p1(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 200, 390, 20, { 204, 204, 204 });
-	string = "p2 = " + std::to_string(p2(0)) + ", " + std::to_string(p2(1)) + ", " + std::to_string(p2(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 220, 390, 20, { 204, 204, 204 });
-	string = "p3 = " + std::to_string(p3(0)) + ", " + std::to_string(p3(1)) + ", " + std::to_string(p3(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 240, 390, 20, { 204, 204, 204 });
-	string = "p4 = " + std::to_string(p4(0)) + ", " + std::to_string(p4(1)) + ", " + std::to_string(p4(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 260, 390, 20, { 204, 204, 204 });
-	string = "p5 = " + std::to_string(p5(0)) + ", " + std::to_string(p5(1)) + ", " + std::to_string(p5(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 280, 390, 20, { 204, 204, 204 });
-	string = "p6 = " + std::to_string(p6(0)) + ", " + std::to_string(p6(1)) + ", " + std::to_string(p6(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 300, 390, 20, { 204, 204, 204 });
-	string = "p7 = " + std::to_string(p7(0)) + ", " + std::to_string(p7(1)) + ", " + std::to_string(p7(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 320, 390, 20, { 204, 204, 204 });
-	string = "p8 = " + std::to_string(p8(0)) + ", " + std::to_string(p8(1)) + ", " + std::to_string(p8(2));
-	app->render->DrawText(string.c_str(), 50, 305 + 340, 390, 20, { 204, 204, 204 });
+	//string = "ct = " + std::to_string(director(0)) + ", " + std::to_string(director(1)) + ", " + std::to_string(director(2));
+	//app->render->DrawText(string.c_str(), 50, 305 + 180, 390, 20, { 204, 204, 204 });
+	//string = "p1 = " + std::to_string(p1(0)) + ", " + std::to_string(p1(1)) + ", " + std::to_string(p1(2));
+	//app->render->DrawText(string.c_str(), 50, 305 + 200, 390, 20, { 204, 204, 204 });
+	//string = "p2 = " + std::to_string(p2(0)) + ", " + std::to_string(p2(1)) + ", " + std::to_string(p2(2));
+	//app->render->DrawText(string.c_str(), 50, 305 + 220, 390, 20, { 204, 204, 204 });
+	//string = "p3 = " + std::to_string(p3(0)) + ", " + std::to_string(p3(1)) + ", " + std::to_string(p3(2));
+	//app->render->DrawText(string.c_str(), 50, 305 + 240, 390, 20, { 204, 204, 204 });
+	//string = "p4 = " + std::to_string(p4(0)) + ", " + std::to_string(p4(1)) + ", " + std::to_string(p4(2));
+	//app->render->DrawText(string.c_str(), 50, 305 + 260, 390, 20, { 204, 204, 204 });
+	//string = "p5 = " + std::to_string(p5(0)) + ", " + std::to_string(p5(1)) + ", " + std::to_string(p5(2));
+	//app->render->DrawText(string.c_str(), 50, 305 + 280, 390, 20, { 204, 204, 204 });
+	//string = "p6 = " + std::to_string(p6(0)) + ", " + std::to_string(p6(1)) + ", " + std::to_string(p6(2));
+	//app->render->DrawText(string.c_str(), 50, 305 + 300, 390, 20, { 204, 204, 204 });
+	//string = "p7 = " + std::to_string(p7(0)) + ", " + std::to_string(p7(1)) + ", " + std::to_string(p7(2));
+	//app->render->DrawText(string.c_str(), 50, 305 + 320, 390, 20, { 204, 204, 204 });
+	//string = "p8 = " + std::to_string(p8(0)) + ", " + std::to_string(p8(1)) + ", " + std::to_string(p8(2));
+	//app->render->DrawText(string.c_str(), 50, 305 + 340, 390, 20, { 204, 204, 204 });
 
 	//Draw matrix
 	string = std::to_string(rmatrix(0));
