@@ -78,6 +78,8 @@ public:
 
 	Eigen::Vector3f RotateQ(Eigen::Vector3f v, Eigen::Vector4f q);
 
+	void Scene::ComputationAndPrintingOfAllRotations();
+
 	void ChangePositionPoints(Eigen::Vector4f q);
 
 public:

@@ -42,7 +42,7 @@ bool GuiButton::Update(float dt)
 				//app->audio->PlayFx(audioFxId);
 			}
 
-			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT) {
+			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN) {
 				state = GuiControlState::PRESSED;
 				if (button == GuiButtontype::PUSH_Q) {
 					//Quaternion values in std::string to float
@@ -50,6 +50,7 @@ bool GuiButton::Update(float dt)
 					app->scene->rmatrix = app->scene->CreateRotationMatrix(app->scene->AngleAndAxisFromQuaternion(q.normalized()));
 
 					app->scene->ChangePositionPoints(q.normalized());
+					app->scene->ComputationAndPrintingOfAllRotations();
 				}
 				if (button == GuiButtontype::PUSH_E) {
 					//Euler axis and angle values in std::string to float
@@ -57,12 +58,14 @@ bool GuiButton::Update(float dt)
 					app->scene->rmatrix = app->scene->CreateRotationMatrix(e);
 
 					app->scene->ChangePositionPoints(app->scene->QuaternionFromEulerAndAxis(e).normalized());
+					app->scene->ComputationAndPrintingOfAllRotations();
 				}
 				if (button == GuiButtontype::PUSH_A) {
 					//Euler angles values in std::string to float
 					app->scene->rmatrix = app->scene->CreateEulerAnglesRotation(std::stof(app->scene->a[0]->input), std::stof(app->scene->a[1]->input), std::stof(app->scene->a[2]->input));
 					
 					app->scene->ChangePositionPoints(app->scene->QuaternionFromEulerAngles(std::stof(app->scene->a[0]->input), std::stof(app->scene->a[1]->input), std::stof(app->scene->a[2]->input)).normalized().normalized());
+					app->scene->ComputationAndPrintingOfAllRotations();
 				}
 				if (button == GuiButtontype::PUSH_V) {
 					//Rotation vector in std::string to float
@@ -70,6 +73,7 @@ bool GuiButton::Update(float dt)
 					app->scene->rmatrix = app->scene->CreateRotationMatrix(app->scene->AngleAndAxisFromRotationVector(v));
 					
 					app->scene->ChangePositionPoints(app->scene->QuaternionFromEulerAndAxis(app->scene->AngleAndAxisFromRotationVector(v)).normalized());
+					app->scene->ComputationAndPrintingOfAllRotations();
 				}
 				if (button == GuiButtontype::RESET) {
 					app->scene->Reset();

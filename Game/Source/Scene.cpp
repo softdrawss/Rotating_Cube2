@@ -520,6 +520,12 @@ void Scene::ControlRotation() {
 		}
 	}
 
+	ComputationAndPrintingOfAllRotations();
+
+	ChangePositionPoints(qtn);
+}
+
+void Scene::ComputationAndPrintingOfAllRotations() {
 	//Calculating Axis and Angle
 	Eigen::Vector<float, 3>dircopia = director.normalized();
 
@@ -553,8 +559,6 @@ void Scene::ControlRotation() {
 	for (int i = 0; i < 3; i++) {
 		a[i]->input = std::to_string(eangles(i));
 	}
-
-	ChangePositionPoints(qtn);
 }
 
 void Scene::ChangePositionPoints(Eigen::Vector4f qtn) {
